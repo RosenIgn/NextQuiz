@@ -1,12 +1,12 @@
 export const CustomNavbar = () => {
   return (
-    <div className="navbar bg-gray-500">
+    <div className="navbar h-20 bg-gray-500">
       <div className="flex-1">
-        <a className="btn btn-ghost text-xl">daisyUI</a>
+        <a className="btn btn-ghost text-xl">QuizHome</a>
       </div>
       <ul
         tabIndex={0}
-        className="absolute flex flex-row ml-36 justify-start justify-center menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow rounded-box w-80"
+        className="absolute flex flex-row self-center ml-36 justify-start justify-center menu menu-sm dropdown-content z-[1] shadow rounded-box w-80"
       >
         <li>
           <a className="text-lg" href="/item1">
@@ -20,7 +20,7 @@ export const CustomNavbar = () => {
       </ul>
       <ul
         tabIndex={1}
-        className="flex flex-row justify-center menu menu-sm dropdown-content mt-3 z-[1] p-2 mr-10 shadow rounded-box w-52"
+        className="flex flex-row justify-center menu menu-sm dropdown-content z-[1]  mr-10 shadow rounded-box w-52"
       >
         <li>
           <a className="text-lg" href="/item1">

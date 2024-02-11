@@ -1,7 +1,7 @@
 export default function Home() {
   return (
     <>
-      <h1>Test Quiz App</h1>
+      <h1 className="top-1/2">Wellcome to the Quiz App</h1>
     </>
   );
 }
