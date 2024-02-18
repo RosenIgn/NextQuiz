@@ -15,6 +15,7 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <CustomNavbar />
         {children}
+        <footer>Next Quiz © 2024</footer>
       </body>
     </html>
   );
