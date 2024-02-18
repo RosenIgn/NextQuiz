@@ -1,35 +1,35 @@
 export const CustomNavbar = () => {
   return (
-    <div className="navbar bg-gray-500">
+    <div className="absolute navbar h-20 bg-gray-800">
       <div className="flex-1">
-        <a className="btn btn-ghost text-xl">daisyUI</a>
+        <a className="btn btn-ghost text-xl" href="/">QuizHome</a>
       </div>
       <ul
         tabIndex={0}
-        className="absolute flex flex-row ml-36 justify-start justify-center menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow rounded-box w-80"
+        className="absolute flex flex-row self-center ml-36 justify-start justify-center menu menu-sm dropdown-content z-[1] shadow rounded-box w-80"
       >
         <li>
-          <a className="text-lg" href="/item1">
+          <a className="text-lg" href="/joinQuiz">
             Join Quiz
           </a>
         </li>
 
         <li>
-          <a className="text-lg">Create new Quiz</a>
+          <a className="text-lg" href="/createQuiz">Create new Quiz</a>
         </li>
       </ul>
       <ul
         tabIndex={1}
-        className="flex flex-row justify-center menu menu-sm dropdown-content mt-3 z-[1] p-2 mr-10 shadow rounded-box w-52"
+        className="flex flex-row justify-center menu menu-sm dropdown-content z-[1]  mr-10 shadow rounded-box w-52"
       >
         <li>
-          <a className="text-lg" href="/item1">
+          <a className="text-lg" href="/login">
             Login
           </a>
         </li>
 
         <li>
-          <a className="text-lg">Register</a>
+          <a className="text-lg" href="/register">Register</a>
         </li>
       </ul>
 
@@ -55,7 +55,7 @@ export const CustomNavbar = () => {
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-gray-800 rounded-box w-52"
           >
             <li>
               <a className="justify-between">
@@ -67,7 +67,7 @@ export const CustomNavbar = () => {
               <a>Settings</a>
             </li>
             <li>
-              <a>Logout</a>
+              <a href="/logout">Logout</a>
             </li>
           </ul>
         </div>
