@@ -1,37 +1,27 @@
 export const CustomNavbar = () => {
   return (
-    <div className="absolute navbar h-20 bg-gray-800">
+    <div className="absolute navbar h-10 bg-gray-800">
       <div className="flex-1">
-        <a className="btn btn-ghost text-xl" href="/">QuizHome</a>
+        <a role="button" className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg bg-transparent text-xl text-blue-500 border-none" href="http://localhost:3000">NextQuiz</a>
       </div>
       <ul
         tabIndex={0}
         className="absolute flex flex-row self-center ml-36 justify-start justify-center menu menu-sm dropdown-content z-[1] shadow rounded-box w-80"
       >
         <li>
-          <a className="text-lg" href="/joinQuiz">
-            Join Quiz
-          </a>
+          <a className="text-lg text-white" href="/joinQuiz">Join Quiz</a>
         </li>
 
         <li>
-          <a className="text-lg" href="/createQuiz">Create new Quiz</a>
+          <a className="text-lg text-white" href="/createQuiz">Create new Quiz</a>
         </li>
       </ul>
-      <ul
-        tabIndex={1}
-        className="flex flex-row justify-center menu menu-sm dropdown-content z-[1]  mr-10 shadow rounded-box w-52"
-      >
-        <li>
-          <a className="text-lg" href="/login">
-            Login
-          </a>
-        </li>
-
-        <li>
-          <a className="text-lg" href="/register">Register</a>
-        </li>
-      </ul>
+      <div className="flex-none">
+        <ul className="menu menu-horizontal px-3">
+          <a role="button" className="btn text-lg text-white border-none bg-transparent" href="/login">Вход</a>
+          <a role="button" className="btn text-lg d-none d-md-flex ms-2 text-white border-none bg-transparent" href="/register">Регистрация</a>
+        </ul>
+      </div>
 
       <div className="flex-none">
         <div className="dropdown dropdown-end">
@@ -58,16 +48,13 @@ export const CustomNavbar = () => {
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-gray-800 rounded-box w-52"
           >
             <li>
-              <a className="justify-between">
-                Profile
-                <span className="badge">New</span>
-              </a>
+              <a href="/profile">Профил</a>
             </li>
             <li>
-              <a>Settings</a>
+              <a href="/accountSettings">Настройки</a>
             </li>
             <li>
-              <a href="/logout">Logout</a>
+              <a href="/logout">Излез от акаунта</a>
             </li>
           </ul>
         </div>
