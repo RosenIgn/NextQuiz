@@ -7,7 +7,7 @@ const Page = () => {
           username: '',
           email: '',
           password: '',
-          ImgUrl: '',
+          repeatPassword: '',
         });
       
         const handleChange = (e) => {
@@ -45,31 +45,22 @@ const Page = () => {
               className="input w-full border-blue-700 text-black mb-4"
             />
             <input
-              label="ImgUrl"
-              type="text"
-              name="ImgUrl"
-              placeholder='Image URL'
-              value={formData.ImgUrl}
-              onChange={handleChange}
-              className="input w-full border-blue-700 text-gray-400 text-black mb-4"
-            />
-            <input
               label="Password"
               type="password"
               name="password"
               placeholder='Password'
               value={formData.password}
               onChange={handleChange}
-              className="input w-full border-blue-700 text-black mb-6"
+              className="input w-full border-blue-700 text-black mb-4"
             />
-             <input
-              label="repear-password"
-              type="repear-password"
-              name="repear-password"
-              placeholder='Repeat password'
-              value={formData.password}
+            <input
+              label="Repeat Password"
+              type="password"
+              name="repeatPassword"
+              placeholder='Repeat Password'
+              value={formData.repeatPassword}
               onChange={handleChange}
-              className="input w-full border-blue-700 text-black mb-6"
+              className="input w-full border-blue-700 text-black mb-4"
             />
             <br/>
             <button className='btn w-full bg-blue-700 text-gray-100' type="submit">Register</button>
