@@ -4,10 +4,9 @@ import { useState } from 'react';
 const Page = () => {
    
         const [formData, setFormData] = useState({
-          username: '',
-          email: '',
-          password: '',
-          repeatPassword: '',
+          Username: '',
+          Email: '',
+          Password: '',
         });
       
         const handleChange = (e) => {
@@ -15,10 +14,17 @@ const Page = () => {
           setFormData((prevData) => ({ ...prevData, [name]: value }));
         };
       
-        const handleSubmit = (e) => {
+        const handleSubmit = async (e) => {
           e.preventDefault();
           // Add your registration logic here
           console.log('Form submitted:', formData);
+          const response = await fetch('http://localhost:5074/api/Auth/Register', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json', // Specify content type as JSON
+            },
+            body: JSON.stringify(formData), // Convert formData to JSON string
+          });
         };
     
     return(
@@ -29,36 +35,36 @@ const Page = () => {
             <input
               label="Username"
               type="text"
-              name="username"
+              name="Username"
               placeholder='Username'
-              value={formData.username}
+              value={formData.Username}
               onChange={handleChange}
               className="input w-full border-blue-700 text-black mb-4"
             />
             <input
               label="Email"
               type="email"
-              name="email"
+              name="Email"
               placeholder='Email'
-              value={formData.email}
+              value={formData.Email}
               onChange={handleChange}
               className="input w-full border-blue-700 text-black mb-4"
             />
             <input
               label="Password"
               type="password"
-              name="password"
+              name="Password"
               placeholder='Password'
-              value={formData.password}
+              value={formData.Password}
               onChange={handleChange}
               className="input w-full border-blue-700 text-black mb-4"
             />
             <input
               label="Repeat Password"
               type="password"
-              name="repeatPassword"
+              name="RepeatPassword"
               placeholder='Repeat Password'
-              value={formData.repeatPassword}
+              value={formData.RepeatPassword}
               onChange={handleChange}
               className="input w-full border-blue-700 text-black mb-4"
             />
@@ -70,4 +76,4 @@ const Page = () => {
     );
     }
     
-    export default Page;
+export default Page;
