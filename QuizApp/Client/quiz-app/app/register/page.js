@@ -64,8 +64,6 @@ const Page = () => {
               type="password"
               name="RepeatPassword"
               placeholder='Repeat Password'
-              value={formData.RepeatPassword}
-              onChange={handleChange}
               className="input w-full border-blue-700 text-black mb-4"
             />
             <br/>
