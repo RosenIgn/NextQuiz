@@ -10,14 +10,6 @@ namespace Server.API.Data.Entities
 {
     public class Users
     {
-        [Key]
-        public string Id { get; init; } = Guid.NewGuid().ToString();
-        [Required]
-        public string Username { get; set; } = null!;
-        [Required]
-        public string Email { get; set; } = null!;
-        [Required]
-        public string Password {get; set; } = null!;
         public Users()
         {
 
@@ -29,5 +21,14 @@ namespace Server.API.Data.Entities
             Email = email;
             Password = password;
         }
+
+        [Key]
+        public string Id { get; init; } = Guid.NewGuid().ToString();
+        [Required]
+        public string Username { get; set; } = null!;
+        [Required]
+        public string Email { get; set; } = null!;
+        [Required]
+        public string Password {get; set; } = null!;
     }
 }
