@@ -34,7 +34,7 @@ namespace Server.API.Controllers
             Users user = new Users(formData.Id, username, email, password);
 
             _context.Users.Add(user);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return Ok("Registration successful");
         }

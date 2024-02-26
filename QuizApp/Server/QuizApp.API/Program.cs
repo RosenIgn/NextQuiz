@@ -35,7 +35,7 @@ if (app.Environment.IsDevelopment())
     using (var scope = app.Services.CreateScope())
     {
         var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        dbContext.Database.EnsureCreatedAsync();
+        await dbContext.Database.EnsureCreatedAsync();
     }
 
     app.UseSwagger();
