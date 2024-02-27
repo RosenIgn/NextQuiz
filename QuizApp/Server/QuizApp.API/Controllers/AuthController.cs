@@ -2,14 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Server.API.Data.Entities;
+using QuizApp.Data.Entities;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using QuizApp.Data;
 
-namespace Server.API.Controllers
+namespace QuizApp.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

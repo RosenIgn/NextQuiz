@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using QuizApp.Data;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,11 +33,11 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    using (var scope = app.Services.CreateScope())
-    {
-        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        await dbContext.Database.EnsureCreatedAsync();
-    }
+    // using (var scope = app.Services.CreateScope())
+    // {
+    //     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    //     await dbContext.Database.EnsureCreatedAsync();
+    // }
 
     app.UseSwagger();
     app.UseSwaggerUI();

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
 
-namespace Server.API.Data.Entities
+namespace QuizApp.Data.Entities
 {
     public class Users
     {
