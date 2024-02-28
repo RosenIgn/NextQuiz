@@ -1,14 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using QuizApp.Data.Entities;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using QuizApp.Data;
+using QuizApp.Common.Requests.Auth;
 
 namespace QuizApp.API.Controllers
 {
@@ -27,12 +21,9 @@ namespace QuizApp.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] Users formData)
+        public async Task<IActionResult> Register([FromBody] RegisterCredentialsRequest formData)
         {
-            string username = formData.Username;
-            string email = formData.Email;
-            string password = formData.Password;
-            Users user = new Users(formData.Id, username, email, password);
+            Users user = new(formData.Id, formData.Username, formData.Email, formData.Password);
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();

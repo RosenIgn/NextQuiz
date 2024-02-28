@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizApp.API", "QuizApp.API\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizApp.Data", "QuizApp.Data\QuizApp.Data.csproj", "{4203530D-423C-44B1-A87D-CDF335E6957C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizApp.Common", "QuizApp.Common\QuizApp.Common.csproj", "{489F7400-40C4-41EF-AE37-BAFDAC4EE983}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{4203530D-423C-44B1-A87D-CDF335E6957C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4203530D-423C-44B1-A87D-CDF335E6957C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4203530D-423C-44B1-A87D-CDF335E6957C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{489F7400-40C4-41EF-AE37-BAFDAC4EE983}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{489F7400-40C4-41EF-AE37-BAFDAC4EE983}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{489F7400-40C4-41EF-AE37-BAFDAC4EE983}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{489F7400-40C4-41EF-AE37-BAFDAC4EE983}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
