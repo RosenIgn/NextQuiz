@@ -14,10 +14,18 @@ const Page = () => {
           setFormData((prevData) => ({ ...prevData, [name]: value }));
         };
       
-        const handleSubmit = (e) => {
+        const handleSubmit = async (e) => {
           e.preventDefault();
           // Add your registration logic here
           console.log('Form submitted:', formData);
+          const response = await fetch('https://localhost:5074/api/Auth/Login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json', // Specify content type as JSON
+            },
+            body: JSON.stringify(formData), // Convert formData to JSON string
+          });
+          console.log(JSON.stringify(response));
         };
     
     return(
