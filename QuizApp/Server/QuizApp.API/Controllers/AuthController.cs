@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using QuizApp.Data;
 using QuizApp.Common.Requests.Auth;
+using QuizApp.Domain.Services.JwtService;
 
 namespace QuizApp.API.Controllers
 {
@@ -12,7 +13,7 @@ namespace QuizApp.API.Controllers
     {
         private readonly AppDbContext _context;
         
-        public AuthController(AppDbContext context)
+        public AuthController(AppDbContext context, JwtService jwtService)
         {
             _context = context;
         }
