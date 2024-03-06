@@ -18,7 +18,7 @@ const Page = () => {
           e.preventDefault();
           // Add your registration logic here
           console.log('Form submitted:', formData);
-          const response = await fetch('http://localhost:5074/api/Auth/Register', {
+          const response = await fetch('https://localhost:5074/api/Auth/Register', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json', // Specify content type as JSON
