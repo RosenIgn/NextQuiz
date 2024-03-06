@@ -27,6 +27,7 @@
   <ItemGroup>
     <ProjectReference Include="..\QuizApp.Data\QuizApp.Data.csproj" />
     <ProjectReference Include="..\QuizApp.Common\QuizApp.Common.csproj" />
+    <ProjectReference Include="..\QuizApp.Domain\QuizApp.Domain.csproj" />
   </ItemGroup>
 
 </Project>

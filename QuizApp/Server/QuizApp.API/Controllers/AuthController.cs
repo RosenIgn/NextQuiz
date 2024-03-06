@@ -5,6 +5,7 @@ using QuizApp.Data;
 using QuizApp.Common.Requests.Auth;
 using Microsoft.AspNetCore.Identity;
 using QuizApp.Common.Requests;
+using QuizApp.Domain.Services.JwtService;
 
 namespace QuizApp.API.Controllers
 {
@@ -17,7 +18,7 @@ namespace QuizApp.API.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly IPasswordHasher<User> _passwordHasher;
         
-        public AuthController(AppDbContext dbContext, UserManager<User> userManager, SignInManager<User> signInManager, IPasswordHasher<User> passwordHasher)
+        public AuthController(AppDbContext context)
         {
             _dbContext = dbContext;
             _userManager = userManager;
