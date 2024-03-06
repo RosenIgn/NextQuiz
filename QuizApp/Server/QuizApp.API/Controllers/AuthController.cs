@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using QuizApp.Data;
 using QuizApp.Common.Requests.Auth;
+using Microsoft.AspNetCore.Identity;
+using QuizApp.Common.Requests;
 
 namespace QuizApp.API.Controllers
 {
@@ -10,24 +12,54 @@ namespace QuizApp.API.Controllers
     [ApiController]
     public class AuthController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly AppDbContext _dbContext;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly IPasswordHasher<User> _passwordHasher;
         
-        public AuthController(AppDbContext context)
+        public AuthController(AppDbContext dbContext, UserManager<User> userManager, SignInManager<User> signInManager, IPasswordHasher<User> passwordHasher)
         {
-            _context = context;
+            _dbContext = dbContext;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _passwordHasher = passwordHasher;
         }
 
-        // [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        [AllowAnonymous]
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login([FromBody] CreateLoginRequest userData)
+        {
+            var user = await _userManager.FindByNameAsync(userData.Username);
+            if (user != null)
+            {
+                var result = await _signInManager.PasswordSignInAsync(user, userData.Password, false, false);
+                if (result.Succeeded) 
+                {
+                    return Ok("I'm in");
+                }
+                return Ok("Batak si, wrong info");
+            }
+            else 
+            {
+                return Ok("not found account");
+            }
+        }
 
         [AllowAnonymous]
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] RegisterCredentialsRequest formData)
+        public async Task<IActionResult> Register([FromBody] CreateRegisterRequest registerData)
         {
-            Users user = new(formData.Id, formData.Username, formData.Email, formData.Password);
-
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
+            User user = new()
+            {
+                UserName = registerData.Username,
+                NormalizedUserName = registerData.Username.ToUpper(),
+                Email = registerData.Email,
+                NormalizedEmail = registerData.Email.ToUpper()
+            };
+            user.PasswordHash = _passwordHasher.HashPassword(user, registerData.Password);
+            
+            await _userManager.CreateAsync(user);
+            
             return Ok("Registration successful");
         }
     }
