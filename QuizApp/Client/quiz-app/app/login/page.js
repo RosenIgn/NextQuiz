@@ -21,11 +21,11 @@ const Page = () => {
           const response = await fetch('https://localhost:5074/api/Auth/Login', {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json', // Specify content type as JSON
+              'Content-Type': 'application/json',
             },
-            body: JSON.stringify(formData), // Convert formData to JSON string
+            body: JSON.stringify(formData),
           });
-          console.log(JSON.stringify(response));
+          console.log(await response.text());
         };
     
     return(

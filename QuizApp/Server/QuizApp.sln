@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizApp.Data", "QuizApp.Dat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizApp.Common", "QuizApp.Common\QuizApp.Common.csproj", "{489F7400-40C4-41EF-AE37-BAFDAC4EE983}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizApp.Domain", "QuizApp.Domain\QuizApp.Domain.csproj", "{50E3E915-F4F4-444F-906A-0B47E4414DD4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,13 @@ Global
 		{489F7400-40C4-41EF-AE37-BAFDAC4EE983}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{489F7400-40C4-41EF-AE37-BAFDAC4EE983}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{489F7400-40C4-41EF-AE37-BAFDAC4EE983}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10963120-BC54-4E93-8159-C1115959E421}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10963120-BC54-4E93-8159-C1115959E421}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10963120-BC54-4E93-8159-C1115959E421}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10963120-BC54-4E93-8159-C1115959E421}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50E3E915-F4F4-444F-906A-0B47E4414DD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50E3E915-F4F4-444F-906A-0B47E4414DD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50E3E915-F4F4-444F-906A-0B47E4414DD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50E3E915-F4F4-444F-906A-0B47E4414DD4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

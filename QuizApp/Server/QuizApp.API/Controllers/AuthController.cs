@@ -5,7 +5,8 @@ using QuizApp.Data;
 using QuizApp.Common.Requests.Auth;
 using Microsoft.AspNetCore.Identity;
 using QuizApp.Common.Requests;
-using QuizApp.Domain.Services.JwtService;
+using QuizApp.Domain;
+using QuizApp.Data.Repositories;
 
 namespace QuizApp.API.Controllers
 {
@@ -17,16 +18,19 @@ namespace QuizApp.API.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IPasswordHasher<User> _passwordHasher;
-        
-        public AuthController(AppDbContext context)
+        private readonly JwtService _jwtService;
+        private readonly UserRepository _userRepository;
+
+        public AuthController(AppDbContext dbContext, UserManager<User> userManager, SignInManager<User> signInManager, IPasswordHasher<User> passwordHasher, JwtService jwtService, UserRepository userRepository)
         {
             _dbContext = dbContext;
             _userManager = userManager;
             _signInManager = signInManager;
             _passwordHasher = passwordHasher;
+            _jwtService = jwtService;
+            _userRepository = userRepository;
         }
 
-        [AllowAnonymous]
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] CreateLoginRequest userData)
         {
@@ -34,19 +38,55 @@ namespace QuizApp.API.Controllers
             if (user != null)
             {
                 var result = await _signInManager.PasswordSignInAsync(user, userData.Password, false, false);
-                if (result.Succeeded) 
+                if (result.Succeeded)
                 {
-                    return Ok("I'm in");
+                    var userId = await _userManager.GetUserIdAsync(user);
+                    var jwt = _jwtService.Generate(userId);
+
+                    Response.Cookies.Append("jwt", jwt, new CookieOptions
+                    {
+                        HttpOnly = true
+                    });
+
+                    return Ok($"I'm in.\nJWT is: {jwt}");
                 }
                 return Ok("Batak si, wrong info");
             }
-            else 
+            else
             {
                 return Ok("not found account");
             }
         }
 
-        [AllowAnonymous]
+        [HttpGet("GetUser")]
+        public IActionResult GetUser()
+        {
+            try
+            {
+                var jwt = Request.Cookies["jwt"];
+                if (jwt != null)
+                {
+                    var token = _jwtService.Verify(jwt);
+                    string userId = token.Issuer;
+
+                    var user = _userRepository.GetById(userId);
+                    return Ok(user);
+                }
+                return Unauthorized();
+            }
+            catch (Exception)
+            {
+                return Unauthorized();
+            }
+        }
+
+        [HttpPost("Logout")]
+        public IActionResult Logout()
+        {
+            Response.Cookies.Delete("jwt");
+            return Ok("success");
+        }
+
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] CreateRegisterRequest registerData)
         {
@@ -58,9 +98,9 @@ namespace QuizApp.API.Controllers
                 NormalizedEmail = registerData.Email.ToUpper()
             };
             user.PasswordHash = _passwordHasher.HashPassword(user, registerData.Password);
-            
+
             await _userManager.CreateAsync(user);
-            
+
             return Ok("Registration successful");
         }
     }
