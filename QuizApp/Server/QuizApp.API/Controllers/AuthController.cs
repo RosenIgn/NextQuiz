@@ -47,8 +47,8 @@ namespace QuizApp.API.Controllers
                     {
                         HttpOnly = true
                     });
-
-                    return Ok($"I'm in.\nJWT is: {jwt}");
+                    var info = new { jwt = jwt};
+                    return Ok(info);
                 }
                 return Ok("Batak si, wrong info");
             }
