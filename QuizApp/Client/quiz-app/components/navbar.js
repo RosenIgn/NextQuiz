@@ -1,8 +1,8 @@
 export const CustomNavbar = () => {
   return (
-    <div className="absolute navbar h-10 bg-gray-800">
+    <div className="absolute navbar border-bottom h-10 bg-bone-white">
       <div className="flex-1">
-        <a role="button" className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg bg-transparent text-xl text-blue-500 border-none" href="http://localhost:3000">NextQuiz</a>
+        <a role="button" className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg bg-transparent text-xl text-main-blue border-none" href="http://localhost:3000">NextQuiz</a>
       </div>
       <ul
         tabIndex={0}

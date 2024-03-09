@@ -1,5 +1,6 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { cookies, cookies } from "next/headers";
 import { CustomNavbar } from "../components/navbar.js";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -10,6 +11,9 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  const cookiesList = cookies();
+  const cookies = cookiesList
+  console.log(cookies);
   return (
     <html lang="en" data-theme="light">
       <body className={inter.className}>
