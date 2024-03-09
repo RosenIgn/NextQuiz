@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace QuizApp.Data.Entities
+namespace QuizApp.Domain.services
 {
-    public class Question
+    public class CreateQuizServace
     {
         
     }
