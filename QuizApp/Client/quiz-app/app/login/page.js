@@ -31,7 +31,7 @@ const Page = () => {
     return(
         <div className="min-h-screen flex items-center justify-center">
         <div className="flex flex-col items-center justify-center max-w-md w-full p-6 bg-white rounded-md shadow-md">
-          <h2 className="text-3xl text-blue-700 font-extrabold mb-6">Login</h2>
+          <h2 className="text-3xl text-main-blue font-extrabold mb-6">Login</h2>
           <form className='flex flex-col w-full items-center justify-center' onSubmit={handleSubmit}>
             <input
               label="Username"
@@ -40,7 +40,7 @@ const Page = () => {
               placeholder='Username'
               value={formData.username}
               onChange={handleChange}
-              className="input w-full border-blue-700 text-black mb-4"
+              className="input w-full border-main-blue text-black mb-4"
             />
             <input
               label="Password"
@@ -49,10 +49,10 @@ const Page = () => {
               placeholder='Password'
               value={formData.password}
               onChange={handleChange}
-              className="input w-full border-blue-700 text-black mb-6"
+              className="input w-full border-main-blue text-black mb-6"
             />
             <br/>
-            <button className='btn w-full bg-blue-700 text-gray-100' type="submit">Login</button>
+            <button className='btn w-full bg-main-blue text-gray-100' type="submit">Login</button>
           </form>
         </div>
       </div>
