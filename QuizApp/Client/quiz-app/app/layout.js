@@ -1,5 +1,6 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { cookies } from "next/headers";
 import { CustomNavbar } from "../components/navbar.js";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -9,11 +10,12 @@ export const metadata = {
   description: "IT Kariera Project",
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }) {  
   return (
     <html lang="en" data-theme="light">
       <body className={inter.className}>
         <CustomNavbar/>
+      
         {children}
         <footer className="footer items-center p-4 bg-gray-800 text-neutral-content">
           <aside className="items-center grid-flow-col">

@@ -2,18 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-} 
+
 
 
 body,html{
-  background: linear-gradient(90deg, #48506d 100%, rgba(238, 236, 236, 0) 100%, rgba(20, 50, 183, 0.6) 100%);
+  
   height: 100%;
   width: 100%;
-}
-body {
-  color: beige; 
 }

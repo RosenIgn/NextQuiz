@@ -1,8 +1,33 @@
+"use client";
+
+
+const handleLogout = () => {
+  fetch('https://localhost:5074/api/Auth/Logout', {
+    method: 'POST',
+  })
+    .then(response => response.text())
+    .then(data => {
+      if (data == "success") {
+        localStorage.clear();
+        window.location.href = '/login';
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  console.log('Logging out...');
+};
+
 export const CustomNavbar = () => {
+  const handleLogoutClick = (e) => {
+    e.preventDefault();
+    handleLogout();
+  };
+  
   return (
-    <div className="absolute navbar h-10 bg-gray-800">
+    <div className="absolute navbar border-bottom h-10 bg-bone-white">
       <div className="flex-1">
-        <a role="button" className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg bg-transparent text-xl text-blue-500 border-none" href="http://localhost:3000">NextQuiz</a>
+        <a role="button" className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg bg-transparent text-xl text-main-blue border-none" href="http://localhost:3000">NextQuiz</a>
       </div>
       <ul
         tabIndex={0}
@@ -18,8 +43,8 @@ export const CustomNavbar = () => {
       </ul>
       <div className="flex-none">
         <ul className="menu menu-horizontal px-3">
-          <a role="button" className="btn text-lg text-white border-none bg-transparent" href="/login">Вход</a>
-          <a role="button" className="btn text-lg d-none d-md-flex ms-2 text-white border-none bg-transparent" href="/register">Регистрация</a>
+          <a role="button" className="btn text-lg text-white border-none bg-transparent" href="/login">Login</a>
+          <a role="button" className="btn text-lg d-none d-md-flex ms-2 text-white border-none bg-transparent" href="/register">Register</a>
         </ul>
       </div>
 
@@ -48,13 +73,13 @@ export const CustomNavbar = () => {
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-gray-800 rounded-box w-52"
           >
             <li>
-              <a href="/profile">Профил</a>
+              <a href="/profile">Profile</a>
             </li>
             <li>
-              <a href="/accountSettings">Настройки</a>
+              <a href="/accountSettings">Settings</a>
             </li>
             <li>
-              <a href="/logout">Излез от акаунта</a>
+              <a href="/" onClick={handleLogoutClick}>Logout</a>
             </li>
           </ul>
         </div>
