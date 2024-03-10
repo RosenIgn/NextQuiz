@@ -12,12 +12,13 @@ module.exports = {
     themes: ["light", "dark", "cupcake"],
   },
   theme: {
+    colors: {
+      'bone-white': '#E0E1DD',
+      'main-white': '#E9EAE5',
+      'main-blue': '#1B67C9',
+    },
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-      },
+
     },
   },
   plugins: [require("daisyui")],

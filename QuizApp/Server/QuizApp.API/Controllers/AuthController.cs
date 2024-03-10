@@ -1,6 +1,5 @@
 using QuizApp.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
 using QuizApp.Data;
 using QuizApp.Common.Requests.Auth;
 using Microsoft.AspNetCore.Identity;
@@ -34,6 +33,10 @@ namespace QuizApp.API.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] CreateLoginRequest userData)
         {
+            if (userData.Username == "" || userData.Password == "")
+            {
+                return Ok(new { errorMessage = $"You have not entered a username or password." }); //do it with global var
+            }
             var user = await _userManager.FindByNameAsync(userData.Username);
             if (user != null)
             {
@@ -43,18 +46,13 @@ namespace QuizApp.API.Controllers
                     var userId = await _userManager.GetUserIdAsync(user);
                     var jwt = _jwtService.Generate(userId);
 
-                    Response.Cookies.Append("jwt", jwt, new CookieOptions
-                    {
-                        HttpOnly = true
-                    });
-                    var info = new { jwt = jwt};
-                    return Ok(info);
+                    return Ok(new { Jwt = jwt, Success = true });
                 }
-                return Ok("Batak si, wrong info");
+                return Ok(new { errorMessage = "The password you entered is incorrect, please try again." }); //do it with global var
             }
             else
             {
-                return Ok("not found account");
+                return Ok(new { errorMessage = $"No account found with username {userData.Username}." }); //do it with global var
             }
         }
 
@@ -63,8 +61,8 @@ namespace QuizApp.API.Controllers
         {
             try
             {
-                var jwt = Request.Cookies["jwt"];
-                if (jwt != null)
+                var jwt = HttpContext.Request.Headers.Authorization.ToString().Replace("Bearer ", "");
+                if (!string.IsNullOrEmpty(jwt))
                 {
                     var token = _jwtService.Verify(jwt);
                     string userId = token.Issuer;
@@ -90,6 +88,7 @@ namespace QuizApp.API.Controllers
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] CreateRegisterRequest registerData)
         {
+            //To Do tomorrow on course - validations (Rosen)
             User user = new()
             {
                 UserName = registerData.Username,
