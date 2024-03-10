@@ -88,7 +88,11 @@ namespace QuizApp.API.Controllers
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] CreateRegisterRequest registerData)
         {
-            //To Do tomorrow on course - validations (Rosen)
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             User user = new()
             {
                 UserName = registerData.Username,
@@ -96,9 +100,19 @@ namespace QuizApp.API.Controllers
                 Email = registerData.Email,
                 NormalizedEmail = registerData.Email.ToUpper()
             };
+
             user.PasswordHash = _passwordHasher.HashPassword(user, registerData.Password);
 
-            await _userManager.CreateAsync(user);
+            var result = await _userManager.CreateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                return BadRequest(ModelState);
+            }
 
             return Ok("Registration successful");
         }
