@@ -43,7 +43,7 @@ export const CustomNavbar = () => {
       </ul>
       <div className="flex-none">
         <ul className="menu menu-horizontal px-3">
-          <a role="button" className="btn text-lg text-white border-none bg-transparent" href="/login">Login</a>
+          <a role="button" className="btn text-lg text-white border-none bg-base-200" href="/login">Login</a>
           <a role="button" className="btn text-lg d-none d-md-flex ms-2 text-base-200 hover:text-base-content border-none bg-main-blue" href="/register">Register</a>
         </ul>
       </div>
