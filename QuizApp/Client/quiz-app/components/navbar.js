@@ -1,5 +1,5 @@
 "use client";
-
+const Jwt = localStorage.getItem()
 
 const handleLogout = () => {
   fetch('https://localhost:5074/api/Auth/Logout', {
