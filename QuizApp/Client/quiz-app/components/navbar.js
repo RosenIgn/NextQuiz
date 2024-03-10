@@ -31,20 +31,20 @@ export const CustomNavbar = () => {
       </div>
       <ul
         tabIndex={0}
-        className="absolute flex flex-row self-center ml-36 justify-start justify-center menu menu-sm dropdown-content z-[1] shadow rounded-box w-80"
+        className="absolute flex flex-row self-center pt-5 ml-36 justify-start justify-center menu menu-sm dropdown-content z-[1] rounded-box w-80"
       >
         <li>
-          <a className="text-lg text-white" href="/joinQuiz">Join Quiz</a>
+          <a className="btn text-lg text-white bg-transparent border-none" href="/joinQuiz">Join Quiz</a>
         </li>
 
         <li>
-          <a className="text-lg text-white" href="/createQuiz">Create new Quiz</a>
+          <a className="btn text-lg text-white bg-transparent border-none" href="/createQuiz">Create new Quiz</a>
         </li>
       </ul>
       <div className="flex-none">
         <ul className="menu menu-horizontal px-3">
           <a role="button" className="btn text-lg text-white border-none bg-transparent" href="/login">Login</a>
-          <a role="button" className="btn text-lg d-none d-md-flex ms-2 text-white border-none bg-transparent" href="/register">Register</a>
+          <a role="button" className="btn text-lg d-none d-md-flex ms-2 text-base-200 hover:text-base-content border-none bg-main-blue" href="/register">Register</a>
         </ul>
       </div>
 
