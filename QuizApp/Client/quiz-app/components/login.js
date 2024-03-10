@@ -37,7 +37,7 @@ const LoginForm = ({ onSubmit }) => {
         className="input w-full border-main-blue text-black mb-6"
       />
       <br/>
-      <button className='btn w-full bg-main-blue text-gray-100' type="submit">Login</button>
+      <button className='btn w-full bg-main-blue text-base-200' type="submit">Login</button>
     </form>
   );
 };
