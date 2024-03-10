@@ -16,6 +16,8 @@ module.exports = {
       'bone-white': '#E0E1DD',
       'main-white': '#E9EAE5',
       'main-blue': '#1B67C9',
+      'blue-200': '#bfdbfe',
+      'light-blue': '#E9F0FA',
     },
     extend: {
 

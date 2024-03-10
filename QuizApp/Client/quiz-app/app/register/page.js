@@ -28,9 +28,9 @@ const Page = () => {
         };
     
     return(
-        <div className="min-h-screen flex items-center justify-center">
-        <div className="flex flex-col items-center justify-center max-w-md w-full p-6 bg-white rounded-md shadow-md">
-          <h2 className="text-3xl text-blue-700 font-extrabold mb-6">Register</h2>
+        <div className="min-h-screen bg-light-blue flex items-center justify-center">
+        <div className="flex flex-col items-center justify-center max-w-md w-full p-6 bg-base-100 rounded-lg shadow-md">
+          <h2 className="text-3xl text-main-blue font-extrabold mb-6">Register</h2>
           <form className='flex flex-col w-full items-center justify-center' onSubmit={handleSubmit}>
             <input
               label="Username"
@@ -39,7 +39,7 @@ const Page = () => {
               placeholder='Username'
               value={formData.Username}
               onChange={handleChange}
-              className="input w-full border-blue-700 text-black mb-4"
+              className="input w-full border-light-blue text-black mb-4"
             />
             <input
               label="Email"
@@ -48,7 +48,7 @@ const Page = () => {
               placeholder='Email'
               value={formData.Email}
               onChange={handleChange}
-              className="input w-full border-blue-700 text-black mb-4"
+              className="input w-full border-light-blue text-black mb-4"
             />
             <input
               label="Password"
@@ -57,17 +57,17 @@ const Page = () => {
               placeholder='Password'
               value={formData.Password}
               onChange={handleChange}
-              className="input w-full border-blue-700 text-black mb-4"
+              className="input w-full border-light-blue text-black mb-4"
             />
             <input
               label="Repeat Password"
               type="password"
               name="RepeatPassword"
               placeholder='Repeat Password'
-              className="input w-full border-blue-700 text-black mb-4"
+              className="input w-full border-light-blue text-black mb-4"
             />
             <br/>
-            <button className='btn w-full bg-blue-700 text-gray-100' type="submit">Register</button>
+            <button className='btn w-full hover:text-base-content bg-main-blue text-base-200' type="submit">Register</button>
           </form>
         </div>
       </div>
