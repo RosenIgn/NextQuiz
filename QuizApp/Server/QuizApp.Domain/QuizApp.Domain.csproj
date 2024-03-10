@@ -8,6 +8,13 @@
 
   <ItemGroup>
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
+    
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\QuizApp.Data\QuizApp.Data.csproj" />
+    <ProjectReference Include="..\QuizApp.Common\QuizApp.Common.csproj" />
+  </ItemGroup>
+
 
 </Project>
