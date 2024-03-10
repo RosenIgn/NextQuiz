@@ -47,17 +47,9 @@ const Page = () => {
   };
 
   return (
-    <div className="block h-screen flex items-center justify-center">
-      <div className="flex flex-col items-center justify-center h-4/5 w-1/2 p-6 bg-white rounded-md shadow-md">
+    <div className="block h-screen bg-main-white flex items-center justify-center">
+      <div className="flex flex-col items-center bg-base-100 justify-center h-3/5 w-2/5 p-6 bg-white rounded-md shadow-md">
         <section className="flex justify-center place-self-start">
-          <img
-            className="max-w-44 max-h-44 left-full mb-16 ml-10 rounded-full"
-            alt="Profile pic"
-            src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-          />
-          <button className="btn justify-center ml-16 mt-16 text-gray-100 bg-blue-700">
-            Change Image
-          </button>
         </section>
         {editing ? (
           <form className="flex flex-col w-full justify-center" onSubmit={handleSubmit}>
@@ -68,7 +60,7 @@ const Page = () => {
               type="text"
               name="username"
               placeholder="Username"
-              className="input w-full border-blue-700 text-black mb-4"
+              className="input w-full border-light-blue text-black mb-4"
               value={formData.username}
               onChange={handleChange}
             />
@@ -78,7 +70,7 @@ const Page = () => {
               type="text"
               name="email"
               placeholder="Email"
-              className="input w-full border-blue-700 text-black mb-4"
+              className="input w-full border-light-blue text-black mb-4"
               value={formData.email}
               onChange={handleChange}
             />
@@ -88,7 +80,7 @@ const Page = () => {
               type="password"
               name="password"
               placeholder="Password"
-              className="input w-1/3 border-blue-700 text-black mb-6"
+              className="input w-1/3 border-light-blue text-black mb-6"
             />
             <a className='btn ml-10'>Change password</a>
             </div>
@@ -113,7 +105,7 @@ const Page = () => {
               type="text"
               name="username"
               placeholder={userData && userData.userName}
-              className="input w-full border-blue-700 text-black mb-4"
+              className="input w-full border-light-blue text-black mb-4"
               readOnly
             />
             <h2 className='text-black'>Email:</h2>
@@ -122,7 +114,7 @@ const Page = () => {
               type="text"
               name="Email"
               placeholder={userData && userData.email}
-              className="input w-full border-blue-700 text-black mb-4"
+              className="input w-full border-light-blue text-black mb-4"
               readOnly
             />
             <h2 className='text-black'>Password:</h2>
@@ -131,7 +123,7 @@ const Page = () => {
               type="password"
               name="password"
               placeholder='Password'
-              className="input w-full border-blue-700 text-black mb-6"
+              className="input w-full border-light-blue text-black mb-6"
               readOnly
             />
           </form>
