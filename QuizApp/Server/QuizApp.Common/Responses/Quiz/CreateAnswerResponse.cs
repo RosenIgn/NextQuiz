@@ -7,15 +7,15 @@ namespace QuizApp.Common.Responses.Quiz
 {
     public class CreateAnswerResponse
     {
-        [Required]
-        public string Id{ get; set; }
-        
-        public string Text { get; set; }
+        // [Required]
+        // public string Id{ get; set; }
 
-        [Required]
-        public bool Correct { get; set; } 
+        // public string Text { get; set; }
 
-        [Required]
-        public string QuestionId { get; set; } 
+        // [Required]
+        // public bool Correct { get; set; } 
+
+        // [Required]
+        // public string QuestionId { get; set; } 
     }
 }

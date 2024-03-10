@@ -7,6 +7,7 @@ const Page = () => {
           Username: '',
           Email: '',
           Password: '',
+          ConfirmPassword: '',
         });
       
         const handleChange = (e) => {
@@ -60,10 +61,12 @@ const Page = () => {
               className="input w-full border-light-blue text-black mb-4"
             />
             <input
-              label="Repeat Password"
+              label="Confirm Password"
               type="password"
-              name="RepeatPassword"
-              placeholder='Repeat Password'
+              name="ConfirmPassword"
+              placeholder='Confirm Password'
+              value={formData.ConfirmPassword}
+              onChange={handleChange}
               className="input w-full border-light-blue text-black mb-4"
             />
             <br/>

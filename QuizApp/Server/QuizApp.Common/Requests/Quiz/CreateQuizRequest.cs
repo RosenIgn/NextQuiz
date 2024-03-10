@@ -7,10 +7,10 @@ namespace QuizApp.Common.Requests.Quiz
 {
     public class CreateQuizRequest
     {
-         [Required]
-        public string Name { get; set; } 
+        //  [Required]
+        // public string Name { get; set; } 
 
-        [Required]
-        public List<Question> Questions { get; set; } = new List<Question>();
+        // [Required]
+        // public List<Question> Questions { get; set; } = new List<Question>();
     }
 }
