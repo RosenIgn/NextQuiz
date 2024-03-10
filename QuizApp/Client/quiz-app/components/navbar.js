@@ -76,9 +76,6 @@ export const CustomNavbar = () => {
               <a href="/profile">Profile</a>
             </li>
             <li>
-              <a href="/accountSettings">Settings</a>
-            </li>
-            <li>
               <a href="/" onClick={handleLogoutClick}>Logout</a>
             </li>
           </ul>
