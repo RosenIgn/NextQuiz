@@ -1,20 +1,21 @@
 "use client";
 
+
 const handleLogout = () => {
-  fetch("https://localhost:5074/api/Auth/Logout", {
-    method: "POST",
+  fetch('https://localhost:5074/api/Auth/Logout', {
+    method: 'POST',
   })
-    .then((response) => response.text())
-    .then((data) => {
+    .then(response => response.text())
+    .then(data => {
       if (data == "success") {
         localStorage.clear();
-        window.location.href = "/login";
+        window.location.href = '/login';
       }
     })
-    .catch((error) => {
-      console.error("Error:", error);
+    .catch(error => {
+      console.error('Error:', error);
     });
-  console.log("Logging out...");
+  console.log('Logging out...');
 };
 
 export const CustomNavbar = () => {
@@ -22,56 +23,28 @@ export const CustomNavbar = () => {
     e.preventDefault();
     handleLogout();
   };
-
+  
   return (
     <div className="absolute navbar border-bottom h-10 bg-bone-white">
       <div className="flex-1">
-        <a
-          role="button"
-          className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg bg-transparent text-xl text-main-blue border-none"
-          href="http://localhost:3000"
-        >
-          NextQuiz
-        </a>
+        <a role="button" className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg bg-transparent text-xl text-main-blue border-none" href="http://localhost:3000">NextQuiz</a>
       </div>
       <ul
         tabIndex={0}
-        className="absolute flex flex-row self-center p-2 ml-36 justify-start justify-center menu menu-sm dropdown-content z-[1] rounded-box w-80 space-x-4"
+        className="absolute flex flex-row self-center pt-5 ml-36 justify-start justify-center menu menu-sm dropdown-content z-[1] rounded-box w-80"
       >
         <li>
-          <a
-            className="btn text-lg text-white bg-transparent border-none content-center"
-            href="/joinQuiz"
-          >
-            Quizzes
-          </a>
+          <a className="btn text-lg text-white bg-transparent border-none" href="/joinQuiz">Join Quiz</a>
         </li>
 
         <li>
-          <a
-            className="btn text-lg text-white bg-transparent border-none content-center"
-            href="/createQuiz"
-          >
-            Create
-          </a>
+          <a className="btn text-lg text-white bg-transparent border-none" href="/createQuiz">Create new Quiz</a>
         </li>
       </ul>
       <div className="flex-none">
-        <ul className="menu menu-horizontal px-4">
-          <a
-            role="button"
-            className="btn text-lg text-white border-none bg-transparent"
-            href="/login"
-          >
-            Login
-          </a>
-          <a
-            role="button"
-            className="btn text-lg d-none d-md-flex ms-2 text-base-200 hover:text-base-content border-none bg-main-blue"
-            href="/register"
-          >
-            Register
-          </a>
+        <ul className="menu menu-horizontal px-3">
+          <a role="button" className="btn text-lg text-white border-none bg-base-200" href="/login">Login</a>
+          <a role="button" className="btn text-lg d-none d-md-flex ms-2 text-base-200 hover:text-base-content border-none bg-main-blue" href="/register">Register</a>
         </ul>
       </div>
 
@@ -103,12 +76,7 @@ export const CustomNavbar = () => {
               <a href="/profile">Profile</a>
             </li>
             <li>
-              <a href="/accountSettings">Settings</a>
-            </li>
-            <li>
-              <a href="/" onClick={handleLogoutClick}>
-                Logout
-              </a>
+              <a href="/" onClick={handleLogoutClick}>Logout</a>
             </li>
           </ul>
         </div>
