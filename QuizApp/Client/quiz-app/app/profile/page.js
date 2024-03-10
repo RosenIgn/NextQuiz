@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const Page = () => {
   const [editing, setEditing] = useState(false); // State to track whether the profile is being edited
@@ -8,6 +8,31 @@ const Page = () => {
     email: '',
     password: '',
   });
+
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const jwtToken = localStorage.getItem('jwt');
+
+        const response = await fetch('https://localhost:5074/api/Auth/GetUser', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${jwtToken}`,
+          },
+        });
+
+        const data = await response.json();
+        console.log(data);
+        setUserData(data);
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      }
+    };
+
+    getUser();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -87,7 +112,7 @@ const Page = () => {
               label="Username"
               type="text"
               name="username"
-              placeholder='Username'
+              placeholder={userData && userData.userName}
               className="input w-full border-blue-700 text-black mb-4"
               readOnly
             />
@@ -96,7 +121,7 @@ const Page = () => {
               label="Email"
               type="text"
               name="Email"
-              placeholder='Email'
+              placeholder={userData && userData.email}
               className="input w-full border-blue-700 text-black mb-4"
               readOnly
             />
