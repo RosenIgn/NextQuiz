@@ -12,16 +12,19 @@ module.exports = {
     themes: ["light", "dark", "cupcake"],
   },
   theme: {
-    colors: {
-      'bone-white': '#E0E1DD',
-      'main-white': '#E9EAE5',
-      'main-blue': '#1B67C9',
-      'blue-200': '#bfdbfe',
-      'light-blue': '#E9F0FA',
-    },
     extend: {
-
+      colors: {
+        'bone-white': '#E0E1DD',
+        'main-white': '#E9EAE5',
+        'main-blue': '#1B67C9',
+        'light-blue': '#E9F0FA',
+        'dark-blue': '#172152',
+      },
+      fontFamily: {
+        'main': ['Poppins', 'sans-serif'],
+      }
     },
   },
+  variants: {},
   plugins: [require("daisyui")],
 };
