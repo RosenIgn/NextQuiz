@@ -18,6 +18,7 @@ module.exports = {
       'main-blue': '#1B67C9',
       'blue-200': '#bfdbfe',
       'light-blue': '#E9F0FA',
+      'wrong-red': '#ff3333',
     },
     extend: {
 
