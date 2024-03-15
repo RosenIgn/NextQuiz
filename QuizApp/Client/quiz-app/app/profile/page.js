@@ -1,33 +1,37 @@
-'use client';
-import { useState, useEffect } from 'react';
+"use client";
+
+import { useState, useEffect } from "react";
 
 const Page = () => {
-  const [editing, setEditing] = useState(false); // State to track whether the profile is being edited
   const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
+    username: "",
+    email: "",
+    password: "",
   });
 
   const [userData, setUserData] = useState(null);
+  const [editing, setEditing] = useState(false);
 
   useEffect(() => {
     const getUser = async () => {
       try {
-        const jwtToken = localStorage.getItem('jwt');
+        const jwtToken = localStorage.getItem("jwt");
 
-        const response = await fetch('https://localhost:5074/api/Auth/GetUser', {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${jwtToken}`,
-          },
-        });
+        const response = await fetch(
+          "https://localhost:5074/api/Auth/GetUser",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${jwtToken}`,
+            },
+          }
+        );
 
         const data = await response.json();
         console.log(data);
         setUserData(data);
       } catch (error) {
-        console.error('Error fetching user:', error);
+        console.error("Error fetching user:", error);
       }
     };
 
@@ -42,93 +46,141 @@ const Page = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Add your update profile logic here
-    console.log('Profile updated:', formData);
-    setEditing(false); // Close the editing mode after submitting the form
+    console.log("Profile updated:", formData);
+    setEditing(false);
+  };
+
+  const handleEditClick = () => {
+    setEditing(true);
+  };
+
+  const handleCancel = () => {
+    setEditing(false);
   };
 
   return (
-    <div className="block h-screen bg-main-white flex items-center justify-center">
-      <div className="flex flex-col items-center bg-base-100 justify-center h-3/5 w-2/5 p-6 bg-white rounded-md shadow-md">
-        <section className="flex justify-center place-self-start">
-        </section>
-        {editing ? (
-          <form className="flex flex-col w-full justify-center" onSubmit={handleSubmit}>
-            <div >
-            <h2 className="text-black">Username:</h2>
-            <input
-              label="Username"
-              type="text"
-              name="username"
-              placeholder="Username"
-              className="input w-full border-light-blue text-black mb-4"
-              value={formData.username}
-              onChange={handleChange}
-            />
-            <h2 className="text-black">Email:</h2>
-            <input
-              label="Email"
-              type="text"
-              name="email"
-              placeholder="Email"
-              className="input w-full border-light-blue text-black mb-4"
-              value={formData.email}
-              onChange={handleChange}
-            />
-            <h2 className="text-black">Password:</h2>
-            <input
-              label="Password"
-              type="password"
-              name="password"
-              placeholder="Password"
-              className="input w-1/3 border-light-blue text-black mb-6"
-            />
-            <a className='btn ml-10'>Change password</a>
+    <div className="block h-screen bg-light-blue flex items-center justify-center">
+      <div className="flex flex-col items-center bg-base-100 h-3/7 w-3/12 max-w-3/12 p-6 bg-white rounded-lg shadow-lg">
+        <h1 className="text-3xl text-main-blue font-extrabold my-2">
+          Account Settings
+        </h1>
+        <form className="space-y-4 w-full" onSubmit={handleSubmit}>
+          <div className="flex flex-col items-center space-y-2">
+            <div className="flex items-center space-x-4">
+              <img
+                className="h-16 w-16 object-cover rounded-full"
+                src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                alt="Current profile photo"
+              />
+              <label className="block">
+                <input
+                  type="file"
+                  className="block w-full text-sm text-slate-500 file:mr-4 file:cursor-pointer file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-main-blue hover:file:bg-blue-100"
+                />
+              </label>
             </div>
-            <button type="submit" className="btn place-self-end text-gray-100 bg-blue-700">
-              Save Changes
-            </button>
-
-          </form>
-        ) : (
-            <div className='flex flex-col w-full'>
-          <button
-            onClick={() => setEditing(true)}
-            className="btn place-self-end text-gray-100 bg-blue-700"
-          >
-            Edit Profile
-          </button>
-
-          <form className='flex flex-col w-full justify-center'>
-            <h2 className='text-black'>Username:</h2>
-            <input
-              label="Username"
-              type="text"
-              name="username"
-              placeholder={userData && userData.userName}
-              className="input w-full border-light-blue text-black mb-4"
-              readOnly
-            />
-            <h2 className='text-black'>Email:</h2>
-             <input
-              label="Email"
-              type="text"
-              name="Email"
-              placeholder={userData && userData.email}
-              className="input w-full border-light-blue text-black mb-4"
-              readOnly
-            />
-            <h2 className='text-black'>Password:</h2>
-            <input
-              label="Password"
-              type="password"
-              name="password"
-              placeholder='Password'
-              className="input w-full border-light-blue text-black mb-6"
-              readOnly
-            />
-          </form>
-        </div>
-        )}
+            <div className="space-y-2 w-full">
+              <h1 className="text-base">Email</h1>
+              <label className="input input-bordered flex items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 16 16"
+                  fill="currentColor"
+                  className="w-4 h-4 opacity-70"
+                >
+                  <path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" />
+                  <path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
+                </svg>
+                <input
+                  type="text"
+                  name="email"
+                  placeholder={
+                    userData && userData.email ? userData.email : "Email"
+                  }
+                  className="grow"
+                  value={formData.email}
+                  onChange={handleChange}
+                  readOnly={!editing}
+                />
+              </label>
+              <h1 className="text-base">Username</h1>
+              <label className="input input-bordered flex items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 16 16"
+                  fill="currentColor"
+                  className="w-4 h-4 opacity-70"
+                >
+                  <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
+                </svg>
+                <input
+                  type="text"
+                  name="username"
+                  placeholder={
+                    userData && userData.userName
+                      ? userData.userName
+                      : "Username"
+                  }
+                  className="grow"
+                  value={formData.username}
+                  onChange={handleChange}
+                  readOnly={!editing}
+                />
+              </label>
+              <h1 className="text-base">Password</h1>
+              <label className="input input-bordered flex items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 16 16"
+                  fill="currentColor"
+                  className="w-4 h-4 opacity-70"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  className="grow"
+                  value={formData.password}
+                  onChange={handleChange}
+                  readOnly={!editing}
+                />
+              </label>
+            </div>
+          </div>
+          <div className="mt-6 flex items-center justify-end gap-x-6">
+            {editing ? (
+              <>
+                <button
+                  type="button"
+                  className="text-sm font-semibold leading-6 text-gray-900"
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="rounded-md bg-main-blue px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                >
+                  Save Changes
+                </button>
+              </>
+            ) : (
+              <button
+                type="button"
+                onClick={handleEditClick}
+                className="rounded-md bg-main-blue px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+              >
+                Edit
+              </button>
+            )}
+          </div>
+        </form>
       </div>
     </div>
   );
