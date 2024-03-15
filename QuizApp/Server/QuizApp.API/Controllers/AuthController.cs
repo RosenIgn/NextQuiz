@@ -56,35 +56,6 @@ namespace QuizApp.API.Controllers
             }
         }
 
-        [HttpGet("GetUser")]
-        public IActionResult GetUser()
-        {
-            try
-            {
-                var jwt = HttpContext.Request.Headers.Authorization.ToString().Replace("Bearer ", "");
-                if (!string.IsNullOrEmpty(jwt))
-                {
-                    var token = _jwtService.Verify(jwt);
-                    string userId = token.Issuer;
-
-                    var user = _userRepository.GetById(userId);
-                    return Ok(user);
-                }
-                return Unauthorized();
-            }
-            catch (Exception)
-            {
-                return Unauthorized();
-            }
-        }
-
-        [HttpPost("Logout")]
-        public IActionResult Logout()
-        {
-            Response.Cookies.Delete("jwt");
-            return Ok("success");
-        }
-
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] CreateRegisterRequest registerData)
         {
@@ -115,6 +86,56 @@ namespace QuizApp.API.Controllers
             }
 
             return Ok("Registration successful");
+        }
+
+        [HttpGet("GetUser")]
+        public IActionResult GetUser()
+        {
+            try
+            {
+                var jwt = HttpContext.Request.Headers.Authorization.ToString().Replace("Bearer ", "");
+                if (!string.IsNullOrEmpty(jwt))
+                {
+                    var token = _jwtService.Verify(jwt);
+                    string userId = token.Issuer;
+
+                    var user = _userRepository.GetById(userId);
+                    return Ok(user);
+                }
+                return Unauthorized();
+            }
+            catch (Exception)
+            {
+                return Unauthorized();
+            }
+        }
+        [HttpPost("ChangeInfo")]
+        public async Task<IActionResult> ChangeInfo([FromBody] CreateInfoRequest infoData)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+
+
+            // if (!result.Succeeded)
+            // {
+            //     foreach (var error in result.Errors)
+            //     {
+            //         ModelState.AddModelError(string.Empty, error.Description);
+            //     }
+            //     return BadRequest(ModelState);
+            // }
+
+            return Ok("success");
+        }
+
+        [HttpPost("Logout")]
+        public IActionResult Logout()
+        {
+            Response.Cookies.Delete("jwt");
+            return Ok("success");
         }
     }
 }

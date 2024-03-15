@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 
 const Page = () => {
   const [formData, setFormData] = useState({
+    currentUsername: "",
     username: "",
     email: "",
     password: "",
@@ -46,12 +47,15 @@ const Page = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Add your update profile logic here
+    formData.currentUsername = userData.userName
     console.log("Profile updated:", formData);
     setEditing(false);
   };
 
   const handleEditClick = () => {
     setEditing(true);
+    formData.email = userData.email
+    formData.username = userData.userName
   };
 
   const handleCancel = () => {

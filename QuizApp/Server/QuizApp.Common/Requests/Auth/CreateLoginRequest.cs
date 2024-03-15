@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace QuizApp.Common.Requests
+namespace QuizApp.Common.Requests.Auth
 {
     public class CreateLoginRequest
     {
