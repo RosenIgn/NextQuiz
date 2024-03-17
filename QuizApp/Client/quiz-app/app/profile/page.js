@@ -4,10 +4,14 @@ import { useState, useEffect } from "react";
 
 const Page = () => {
   const [formData, setFormData] = useState({
-    currentUsername: "",
     username: "",
     email: "",
     password: "",
+  });
+
+  const [modalData, setModalData] = useState({
+    currentPassword: "",
+    newPassword: "",
   });
 
   const [userData, setUserData] = useState(null);
@@ -39,26 +43,111 @@ const Page = () => {
     getUser();
   }, []);
 
-  const handleChange = (e) => {
+  const handleChange = () => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleModalChange = (e) => {
     e.preventDefault();
-    // Add your update profile logic here
-    formData.currentUsername = userData.userName
-    console.log("Profile updated:", formData);
-    setEditing(false);
+
+    const { name, value } = e.target;
+    setModalData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleEditClick = () => {
+  const resetFormData = () => {
+    setFormData({
+      username: "",
+      email: "",
+      password: "",
+    });
+    setUserData((prevUserData) => ({
+      ...prevUserData,
+      userName: formData.username,
+      email: formData.email,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (
+      formData.username == "" ||
+      formData.email == "" ||
+      formData.password == ""
+    ) {
+      console.log("You have not entered a username, email or password.");
+    } else {
+      const response = await fetch(
+        "https://localhost:5074/api/Auth/ChangeUserData",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            currentUsername: userData.userName,
+            username: formData.username,
+            email: formData.email,
+            password: formData.password,
+            currentPassword: userData.passwordHash,
+          }),
+        }
+      );
+      const responseData = await response.json();
+      console.log(responseData);
+      if (responseData.success) {
+        console.log("Profile updated:", formData);
+        resetFormData();
+        setEditing(false);
+      } else {
+        console.log(responseData.message);
+      }
+    }
+  };
+
+  const handleModalSubmit = async (e) => {
+    e.preventDefault();
+
+    if (modalData.currentPassword == "" || modalData.newPassword == "") {
+      console.log("You have not entered a password.");
+    } else {
+      const response = await fetch(
+        "https://localhost:5074/api/Auth/ChangeUserPassword",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            currentUsername: userData.userName,
+            password: modalData.currentPassword,
+            currentPassword: userData.passwordHash,
+          }),
+        }
+      );
+
+      const responseData = await response.json();
+      console.log(responseData);
+      if (responseData.success) {
+        console.log("Let's goo");
+      } else {
+        console.log(responseData.message);
+      }
+      setEditing(false);
+    }
+  };
+
+  const handleEditClick = (e) => {
+    e.preventDefault();
+
+    formData.email = userData.email;
+    formData.username = userData.userName;
     setEditing(true);
-    formData.email = userData.email
-    formData.username = userData.userName
   };
 
   const handleCancel = () => {
+    formData.email = "";
+    formData.username = "";
     setEditing(false);
   };
 
@@ -68,7 +157,7 @@ const Page = () => {
         <h1 className="text-3xl text-main-blue font-extrabold my-2">
           Account Settings
         </h1>
-        <form className="space-y-4 w-full" onSubmit={handleSubmit}>
+        <form className="space-y-4 w-full">
           <div className="flex flex-col items-center space-y-2">
             <div className="flex items-center space-x-4">
               <img
@@ -162,29 +251,114 @@ const Page = () => {
               <>
                 <button
                   type="button"
+                  className="rounded-md bg-dark-blue px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                  onClick={() =>
+                    document.getElementById("changePasswordModal").showModal()
+                  }
+                >
+                  Change Password
+                </button>
+
+                <button
+                  type="button"
                   className="text-sm font-semibold leading-6 text-gray-900"
                   onClick={handleCancel}
                 >
                   Cancel
                 </button>
                 <button
-                  type="submit"
+                  type="button"
                   className="rounded-md bg-main-blue px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                  onClick={handleSubmit}
                 >
                   Save Changes
                 </button>
               </>
             ) : (
-              <button
-                type="button"
-                onClick={handleEditClick}
-                className="rounded-md bg-main-blue px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-              >
-                Edit
-              </button>
+              <>
+                <button
+                  type="button"
+                  onClick={handleEditClick}
+                  className="rounded-md bg-main-blue px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                >
+                  Edit
+                </button>
+              </>
             )}
           </div>
         </form>
+        <dialog id="changePasswordModal" className="modal sm:modal-middle">
+          <div className="modal-box">
+            <div className="space-y-2 w-full">
+              <h1 className="text-base">Current Password</h1>
+              <label className="input input-bordered flex items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 16 16"
+                  fill="currentColor"
+                  className="w-4 h-4 opacity-70"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <input
+                  type="password"
+                  name="currentPassword"
+                  placeholder="Password"
+                  className="grow"
+                  value={modalData.currentPassword}
+                  onChange={handleModalChange}
+                  readOnly={!editing}
+                />
+              </label>
+              <h1 className="text-base">New Password</h1>
+              <label className="input input-bordered flex items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 16 16"
+                  fill="currentColor"
+                  className="w-4 h-4 opacity-70"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <input
+                  type="password"
+                  name="newPassword"
+                  placeholder="New Password"
+                  className="grow"
+                  onChange={handleModalChange}
+                  readOnly={!editing}
+                />
+              </label>
+            </div>
+            <div className="modal-action">
+              <form method="dialog">
+                <div className="flex items-center justify-end gap-x-6">
+                  <button
+                    type="submit"
+                    className="text-sm font-semibold leading-6 text-gray-900"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="rounded-md bg-main-blue px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                    onClick={handleModalSubmit}
+                  >
+                    Save Changes
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </dialog>
       </div>
     </div>
   );

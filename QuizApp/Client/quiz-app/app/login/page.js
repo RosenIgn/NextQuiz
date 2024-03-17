@@ -1,13 +1,10 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const Page = () => {
-  const router = useRouter();
   const [formData, setFormData] = useState({
     username: "",
-    email: "",
     password: "",
   });
 
@@ -34,7 +31,7 @@ const Page = () => {
       if (responseData.success) {
         localStorage.setItem("jwt", responseData.jwt);
       } else {
-        console.log(responseData.errorMessage);
+        console.log(responseData.message);
       }
     }
   };

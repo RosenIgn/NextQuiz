@@ -35,7 +35,7 @@ namespace QuizApp.API.Controllers
         {
             if (userData.Username == "" || userData.Password == "")
             {
-                return Ok(new { errorMessage = $"You have not entered a username or password." }); //do it with global var
+                return Ok(new { message = $"You have not entered a username or password." }); //do it with global var
             }
             var user = await _userManager.FindByNameAsync(userData.Username);
             if (user != null)
@@ -48,11 +48,11 @@ namespace QuizApp.API.Controllers
 
                     return Ok(new { Jwt = jwt, Success = true });
                 }
-                return Ok(new { errorMessage = "The password you entered is incorrect, please try again." }); //do it with global var
+                return Ok(new { message = "The password you entered is incorrect, please try again." }); //do it with global var
             }
             else
             {
-                return Ok(new { errorMessage = $"No account found with username {userData.Username}." }); //do it with global var
+                return Ok(new { message = $"No account found with username {userData.Username}." }); //do it with global var
             }
         }
 
@@ -85,7 +85,7 @@ namespace QuizApp.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            return Ok("Registration successful");
+            return Ok(new { message = $"Registration successful" }); //do it with global var
         }
 
         [HttpGet("GetUser")]
@@ -109,31 +109,84 @@ namespace QuizApp.API.Controllers
                 return Unauthorized();
             }
         }
-        [HttpPost("ChangeInfo")]
-        public async Task<IActionResult> ChangeInfo([FromBody] CreateInfoRequest infoData)
+
+        [HttpPost("ChangeUserData")]
+        public async Task<IActionResult> ChangeUserData([FromBody] CreateUserDataRequest infoData)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
+            var user = await _userManager.FindByNameAsync(infoData.CurrentUsername);
 
+            if (user == null)
+            {
+                return Ok(new { message = $"No account found with username {infoData.CurrentUsername}." }); //do it with global var
+            }
+            var verificationResult = _passwordHasher.VerifyHashedPassword(user, infoData.CurrentPassword, infoData.Password);
+            if (verificationResult == PasswordVerificationResult.Success)
+            {
+                user.UserName = infoData.Username;
+                user.Email = infoData.Email;
+                var result = await _userManager.UpdateAsync(user);
 
-            // if (!result.Succeeded)
-            // {
-            //     foreach (var error in result.Errors)
-            //     {
-            //         ModelState.AddModelError(string.Empty, error.Description);
-            //     }
-            //     return BadRequest(ModelState);
-            // }
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                    return BadRequest(ModelState);
+                }
+                return Ok(new { message = $"Success", Success = true }); //do it with global var
+            }
+            else
+            {
+                return Ok(new { message = $"The password is not correct." }); //do it with global var
+            }
+        }
+        [HttpPost("ChangeUserPassword")]
+        public async Task<IActionResult> ChangeUserPassword([FromBody] ChangePasswordRequest data)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-            return Ok("success");
+            var user = await _userManager.FindByNameAsync(data.CurrentUsername);
+
+            if (user == null)
+            {
+                return Ok(new { message = $"No account found with username {data.CurrentUsername}." }); //do it with global var
+            }
+            var verificationResult = _passwordHasher.VerifyHashedPassword(user, data.CurrentPassword, data.Password);
+            if (verificationResult == PasswordVerificationResult.Success)
+            {
+                user.PasswordHash = _passwordHasher.HashPassword(user, data.Password);
+                var result = await _userManager.UpdateAsync(user);
+
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                    return BadRequest(ModelState);
+                }
+
+                return Ok(new { message = $"Success", Success = true }); //do it with global var
+            }
+            else
+            {
+                return Ok(new { message = $"The password is not correct." }); //do it with global var
+            }
         }
 
         [HttpPost("Logout")]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
+            await _signInManager.SignOutAsync();
             Response.Cookies.Delete("jwt");
             return Ok("success");
         }
