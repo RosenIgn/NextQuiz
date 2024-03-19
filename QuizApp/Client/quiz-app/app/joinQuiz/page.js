@@ -1,9 +1,11 @@
 'use client';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation'
 
 const Page = () => {
   const [quizCode, setQuizCode] = useState('');
-
+  const allQuizesObg = {}; // enter the back end logic and return all the quizes
+const router = useRouter();
   const handleQuizCodeChange = (event) => {
     setQuizCode(event.target.value);
   };
@@ -11,6 +13,7 @@ const Page = () => {
   const handleJoinQuiz = () => {
     // Handle logic to join the quiz using the quiz code
     console.log(`Joining quiz with code: ${quizCode}`);
+    router.push('joinQuiz/id');
   };
 
   return (
