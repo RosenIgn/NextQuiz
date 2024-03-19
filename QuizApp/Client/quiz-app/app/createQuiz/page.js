@@ -6,13 +6,18 @@ const Page = () => {
     { id: Date.now(), question: "", options: [""], selectedOption: "" },
   ]);
   const [popUp, setPopUp] = useState(false);
-  const [quizCode, setQuizCode] = useState();
+  const [quizCode, setQuizCode] = useState("");
+  const [validation, setValidation] = useState(false);
 
   const submitHandler = () => {
+    const isEmpty = questions.some((question) => question.question === "" || question.options.some(option => option === ""));
+    if(isEmpty){
+      setValidation(true)
+      return;
+    }
     const quizCodeGenerator = Array.from({ length: 6 }, () =>
       Math.floor(Math.random() * 10)
     ).join("");
-    console.log(questions);
     setQuizCode(quizCodeGenerator);
     setPopUp(true);
   };
@@ -68,98 +73,111 @@ const Page = () => {
   };
 
   return (
-      <div className="flex flex-col container mx-auto p-4">
-        <h1 className="text-3xl font-bold mb-4 text-center text-gray-800">
-          Create Quiz
-        </h1>
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      <h1 className="text-3xl font-bold mb-4 text-center text-gray-800">
+        Create Quiz
+      </h1>
 
-        {questions.map((question, index) => (
-          <div key={question.id} className="relative mb-4">
-            <div className="flex flex-row justify-center bg-gray-100 space-y-4 rounded-md w-full p-4">
-              <div className="flex flex-col mr-20">
-                <div className="badge mb-4 w-4/5 self-center text-center text-lg text-gray-700">
-                  {`Question ${index + 1}`}
-                </div>
-                <textarea
-                  className="textarea flex-row text-md w-full max-h-44 mb-4 p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-400"
-                  onChange={(e) =>
-                    handleQuestionChange(question.id, e.target.value)
-                  }
-                  placeholder="Type your question here"
-                  value={question.question}
-                ></textarea>
+      {questions.map((question, index) => (
+        <div key={question.id} className="relative w-1/2 mb-4">
+          <div className="flex flex-row justify-center bg-gray-100 space-y-4 rounded-md w-full p-4">
+            <div className="flex flex-col mr-20">
+              <div className="badge mb-4 w-4/5 self-center text-center text-lg text-gray-700">
+                {`Question ${index + 1}`}
               </div>
-
-              <div className="space-y-2">
-                {question.options.map((option, optionIndex) => (
-                  <div key={optionIndex} className="flex items-center space-x-2">
-                    <input
-                      type="radio"
-                      name={`radio-${question.id}`}
-                      className="radio mb-2"
-                      value={option}
-                      checked={question.selectedOption === option} // Set the checked state based on selectedOption
-                      onChange={(e) =>
-                        handleOptionChange(
-                          question.id,
-                          optionIndex,
-                          e.target.value
-                        )
-                      }
-                    />
-                    <input
-                      className="input border-light-blue mb-2 p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-400"
-                      placeholder="Type your answer here"
-                      onChange={(e) =>
-                        handleOptionChange(
-                          question.id,
-                          optionIndex,
-                          e.target.value
-                        )
-                      }
-                      value={option}
-                    />
-                    <button
-                      className="btn mb-2 text-lg text-red-600 font-semibold"
-                      onClick={() => removeOption(question.id, optionIndex)}
-                    >
-                      X
-                    </button>
-                  </div>
-                ))}
-                {question.options.length <= 3 && (
-                  <button
-                    className="btn bg-blue-500 text-white py-2 px-4 rounded-md"
-                    onClick={() => addOption(question.id)}
-                  >
-                    Add Option
-                  </button>
-                )}
-              </div>
+              <textarea
+                className="textarea flex-row text-md w-full max-h-44 mb-4 p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-400"
+                onChange={(e) =>
+                  handleQuestionChange(question.id, e.target.value)
+                }
+                placeholder="Type your question here"
+                value={question.question}
+              ></textarea>
             </div>
-            <button
-              className="btn absolute bg-red-500 text-white py-2 px-4 rounded-full shadow-md text-lg top-0 right-0 mt-2 mr-2"
-              onClick={() => removeQuestion(question.id)}
-            >
-              X
-            </button>
-          </div>
-        ))}
 
-        <button
-          className="btn bg-blue-500 text-white py-2 px-4 rounded-md mt-4"
-          onClick={addQuestion}
-        >
-          Add Question
-        </button>
-        <button
-          className="btn bg-green-500 text-white py-2 px-4 rounded-md mt-2"
-          onClick={submitHandler}
-        >
-          Complete
-        </button>
-        {popUp && (
-          <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+            <div className="space-y-2">
+              {question.options.map((option, optionIndex) => (
+                <div key={optionIndex} className="flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    name={`radio-${question.id}`}
+                    className="radio mb-2"
+                    value={option}
+                    checked={question.selectedOption === option} // Set the checked state based on selectedOption
+                    onChange={(e) =>
+                      handleOptionChange(
+                        question.id,
+                        optionIndex,
+                        e.target.value
+                      )
+                    }
+                  />
+                  <input
+                    className="input border-light-blue mb-2 p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-400"
+                    placeholder="Type your answer here"
+                    onChange={(e) =>
+                      handleOptionChange(
+                        question.id,
+                        optionIndex,
+                        e.target.value
+                      )
+                    }
+                    value={option}
+                  />
+                  <button
+                    className="btn mb-2 text-lg text-red-600 font-semibold"
+                    onClick={() => removeOption(question.id, optionIndex)}
+                  >
+                    X
+                  </button>
+                </div>
+              ))}
+              {question.options.length <= 3 && (
+                <button
+                  className="btn bg-blue-500 text-white py-2 px-4 rounded-md"
+                  onClick={() => addOption(question.id)}
+                >
+                  Add Option
+                </button>
+              )}
+            </div>
+          </div>
+          <button
+            className="btn absolute bg-red-500 text-white py-2 px-4 rounded-full shadow-md text-lg top-0 right-0 mt-2 mr-2"
+            onClick={() => removeQuestion(question.id)}
+          >
+            X
+          </button>
+        </div>
+      ))}
+
+      <button
+        className="btn bg-blue-500 text-white py-2 px-4 rounded-md mt-4"
+        onClick={addQuestion}
+      >
+        Add Question
+      </button>
+      <button
+        className="btn bg-green-500 text-white py-2 px-4 rounded-md mt-2"
+        onClick={submitHandler}
+      >
+        Complete
+      </button>
+      {validation && (
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+        <div className="flex flex-col w-1/5 justify-center items-center bg-white p-8 rounded-md">
+          <h2 className="text-lg font-semibold mb-4">All fields must be filled!</h2>
+          <button
+                className="btn bg-blue-500 text-white py-2 px-4 rounded-md"
+                onClick={() => setValidation(false)}
+              >
+                Ok
+              </button>
+        </div>
+      </div>
+      )}
+      {popUp && (
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
           <div className="flex flex-col w-1/5 justify-center items-center bg-white p-8 rounded-md">
             <h2 className="text-lg font-semibold mb-4">Quiz Code</h2>
             <h1 className="text-lg font-bold">{quizCode}</h1>
@@ -170,16 +188,17 @@ const Page = () => {
               >
                 Edit
               </button>
-              <a href='/joinQuiz' className="btn bg-blue-500 text-white py-2 px-4 rounded-md">
-                Ok
+              <a
+                className="btn bg-blue-500 text-white py-2 px-4 rounded-md"
+                href="/joinQuiz"
+              >
+                ok
               </a>
             </div>
           </div>
         </div>
-        
-        )}
-      </div>
-
+      )}
+    </div>
   );
 };
 
