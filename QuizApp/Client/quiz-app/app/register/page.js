@@ -8,6 +8,12 @@ const Page = () => {
     Password: "",
     ConfirmPassword: "",
   });
+  const [validation, setValidation] = useState({
+    Username: false,
+    Email: false,
+    Password: false,
+    ConfirmPassword: false,
+  })
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,6 +22,35 @@ const Page = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const updatedValidation = { ...validation };
+    const emailReqExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    if (formData.Username.length <= 5 || formData.Username.length >= 20) {
+      updatedValidation.Username = true;
+    }
+    else {
+      updatedValidation.Username = false;
+    }
+    if(!emailReqExp.test(formData.Email)){
+      updatedValidation.Email = true;
+    }
+    else {
+      updatedValidation.Email = false;
+    }
+    if(formData.Password.length <= 8 || formData.Password.length >= 30){
+      updatedValidation.Password = true;
+    }
+    else {
+      updatedValidation.Password = false;
+    }
+    if(formData.ConfirmPassword !== formData.Password){
+      updatedValidation.ConfirmPassword = true;
+    }
+    else{
+      updatedValidation.ConfirmPassword = false;
+    }
+
+    setValidation(updatedValidation)
     console.log("Form submitted:", formData);
     if (
       formData.Username == "" ||
@@ -56,17 +91,19 @@ const Page = () => {
             placeholder="Username"
             value={formData.Username}
             onChange={handleChange}
-            className="input w-full border-light-blue text-black mb-4"
+            className="input w-full border-light-blue text-black mb-0"
           />
+          {validation.Username && (<p className="text-wrong-red">Username must be between 5 and 20 characters </p>)}
           <input
             label="Email"
-            type="email"
+            
             name="Email"
             placeholder="Email"
             value={formData.Email}
             onChange={handleChange}
-            className="input w-full border-light-blue text-black mb-4"
+            className="input w-full border-light-blue text-black mt-4"
           />
+          {validation.Email && (<p className="text-wrong-red">Invalid email </p>)}
           <input
             label="Password"
             type="password"
@@ -74,8 +111,9 @@ const Page = () => {
             placeholder="Password"
             value={formData.Password}
             onChange={handleChange}
-            className="input w-full border-light-blue text-black mb-4"
+            className="input w-full border-light-blue text-black mt-4"
           />
+          {validation.Password && (<p className="text-wrong-red">Password must be between 8 and 30 characters</p>)}
           <input
             label="Confirm Password"
             type="password"
@@ -83,8 +121,9 @@ const Page = () => {
             placeholder="Confirm Password"
             value={formData.ConfirmPassword}
             onChange={handleChange}
-            className="input w-full border-light-blue text-black mb-4"
+            className="input w-full border-light-blue text-black mt-4"
           />
+          {validation.ConfirmPassword && (<p className="text-wrong-red">The password is not the same</p>)}
           <br />
           <button
             className="btn w-full hover:text-base-content bg-main-blue text-base-200"

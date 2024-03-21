@@ -7,6 +7,10 @@ const Page = () => {
     username: "",
     password: "",
   });
+  const [validation, setValidation] = useState({
+    Username: false,
+    Password: false,
+  })
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -15,10 +19,9 @@ const Page = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    if (formData.username == "" || formData.password == "") {
-      console.log("You have not entered a username or password.");
-    } else {
+    
+    const updatedValidation = {...validation};
+    //console.log("Form submitted:", formData);
       const response = await fetch("https://localhost:5074/api/Auth/Login", {
         method: "POST",
         headers: {
@@ -36,7 +39,20 @@ const Page = () => {
       } else {
         console.log(responseData.message);
       }
+    
+    if(false){
+      updatedValidation.Username = true;
     }
+    else {
+      updatedValidation.Username = false;
+    }
+    if(true){
+      updatedValidation.Password = true;
+    }
+    else{
+      updatedValidation.Password = false;
+    }
+    setValidation(updatedValidation);
   };
 
   return (
@@ -54,8 +70,9 @@ const Page = () => {
             placeholder="Username"
             value={formData.username}
             onChange={handleChange}
-            className="input w-full border-light-blue text-black mb-4"
+            className="input w-full border-light-blue text-black mb-0"
           />
+          {validation.Username && (<p className="text-wrong-red">Username is incorrect</p>)}
           <input
             label="Password"
             type="password"
@@ -63,8 +80,9 @@ const Page = () => {
             placeholder="Password"
             value={formData.password}
             onChange={handleChange}
-            className="input w-full border-light-blue text-black mb-6"
+            className="input w-full border-light-blue text-black mt-4 mb-6"
           />
+          {validation.Password && (<p className="text-wrong-red">Password is incorrect</p>)}
           <br />
           <button
             className="btn w-full hover:text-base-content bg-main-blue text-base-200"
