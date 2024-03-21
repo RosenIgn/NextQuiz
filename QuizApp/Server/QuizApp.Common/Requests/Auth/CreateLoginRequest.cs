@@ -8,11 +8,10 @@ namespace QuizApp.Common.Requests.Auth
 {
     public class CreateLoginRequest
     {
-        [Required]
+        [Required(ErrorMessage = "Username is required.")]
         public string Username { get; set; } = null!;
 
-        [Required]
-        // [DataType(DataType.Password)]
+        [Required(ErrorMessage = "Password is required.")]
         public string Password { get; set; } = null!;
     }
 }
