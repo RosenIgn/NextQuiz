@@ -32,6 +32,7 @@ const Page = () => {
         const expirationTime = new Date().getTime() + 30 * 60000; // 30 minutes from now
         localStorage.setItem("jwt", responseData.jwt);
         localStorage.setItem("jwtExpiration", expirationTime);
+        window.location.href = "/";
       } else {
         console.log(responseData.message);
       }

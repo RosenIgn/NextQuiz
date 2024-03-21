@@ -85,7 +85,7 @@ namespace QuizApp.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            return Ok(new { message = $"Registration successful" }); //do it with global var
+            return Ok(new { success = true, message = $"Registration successful" }); //do it with global var
         }
 
         [HttpGet("GetUser")]

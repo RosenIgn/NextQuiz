@@ -1,34 +1,69 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using QuizApp.Domain.services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using QuizApp.Common.Requests.Quiz;
+using QuizApp.Data;
+using QuizApp.Data.Entities;
 
 namespace QuizApp.API.Controllers
 {
-    public class CreateQuizController
+    [Route("api/[controller]")]
+    [ApiController]
+    public class CreateQuizController : Controller
     {
-        // private readonly AppDbContext _context;
-        // CreateQuizServace servace;
+        private readonly AppDbContext _dbContext;
+        private readonly UserManager<User> _userManager;
+        public CreateQuizController(AppDbContext dbContext, UserManager<User> userManager)
+        {
+            _dbContext = dbContext;
+            _userManager = userManager;
+        }
 
-        // public CreateQuizController(AppDbContext context)
-        // {
-        //     _context = context;
-        //     servace==new CreateQuizServace(_context);
-        // }
+        [HttpPost("CreateQuiz")]
+        public IActionResult CreateQuiz([FromBody] List<CreateQuizRequest> quizData)
+        {
+            Random random = new();
+            int randomNumber = random.Next(100000, 1000000);
+            string quizCode = randomNumber.ToString();
 
-        // [HttpPost("Create")]
-        // public IActionResponse CreateAnswer(CreateAnswerRequest request)
-        // {
-        //     CreateAnswerResponse response = servace.CreateAnswer(request);
+            Quiz quiz = new()
+            {
+                Code = quizCode
+            };
 
-        //     return Ok(response.Id)
-        // }
+            _dbContext.Quizzes.Add(quiz);
 
-        // public IActionResponse CreateQuestion(CreateQuestonRequest request)
-        // {
-        //     CreateQuestionResponse response=servace.CreateQuestion(request);
-        //     return Ok(response.Id)
-        // }
+            foreach (var questionData in quizData)
+            {
+
+                Question question = new()
+                {
+                    Label = questionData.Question,
+                    CorrectAnswer = questionData.SelectedOption,
+                    Quiz = quiz
+                };
+
+                _dbContext.Questions.Add(question);
+
+                foreach (var answerData in questionData.Options)
+                {
+                    Answer answer = new()
+                    {
+                        Label = answerData,
+                        Question = question
+                    };
+
+                    _dbContext.Answers.Add(answer);
+                }
+            }
+            try
+            {
+                _dbContext.SaveChanges();
+                return Ok(quiz.Code);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while saving the quiz.");
+            }
+        }
     }
 }
