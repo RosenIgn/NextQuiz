@@ -8,6 +8,9 @@ namespace QuizApp.Data
 {
     public class AppDbContext : IdentityDbContext<User>
     {
+        public DbSet<Quiz> Quizzes { get; set; }
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<Answer> Answers { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
 

@@ -9,16 +9,35 @@ const Page = () => {
   const [quizCode, setQuizCode] = useState("");
   const [validation, setValidation] = useState(false);
 
-  const submitHandler = () => {
-    const isEmpty = questions.some((question) => question.question === "" || question.options.some(option => option === ""));
-    if(isEmpty){
-      setValidation(true)
+  const submitHandler = async () => {
+    const isEmpty = questions.some(
+      (question) =>
+        question.question === "" ||
+        question.options.some((option) => option === "")
+    );
+    if (isEmpty) {
+      setValidation(true);
       return;
     }
-    const quizCodeGenerator = Array.from({ length: 6 }, () =>
-      Math.floor(Math.random() * 10)
-    ).join("");
-    setQuizCode(quizCodeGenerator);
+    const requestBody = questions.map((question) => ({
+      options: question.options,
+      question: question.question,
+      selectedOption: question.selectedOption,
+    }));
+
+    const response = await fetch(
+      "https://localhost:5074/api/CreateQuiz/CreateQuiz",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody), // Send the formatted request body
+      }
+    );
+    const responseData = await response.text();
+
+    setQuizCode(responseData);
     setPopUp(true);
   };
 
@@ -43,7 +62,9 @@ const Page = () => {
 
   const addOption = (id) => {
     const updatedQuestions = questions.map((question) =>
-      question.id === id ? { ...question, options: [...question.options, ""] } : question
+      question.id === id
+        ? { ...question, options: [...question.options, ""] }
+        : question
     );
     setQuestions(updatedQuestions);
   };
@@ -165,16 +186,18 @@ const Page = () => {
       </button>
       {validation && (
         <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
-        <div className="flex flex-col w-1/5 justify-center items-center bg-white p-8 rounded-md">
-          <h2 className="text-lg font-semibold mb-4">All fields must be filled!</h2>
-          <button
-                className="btn bg-blue-500 text-white py-2 px-4 rounded-md"
-                onClick={() => setValidation(false)}
-              >
-                Ok
-              </button>
+          <div className="flex flex-col w-1/5 justify-center items-center bg-white p-8 rounded-md">
+            <h2 className="text-lg font-semibold mb-4">
+              All fields must be filled!
+            </h2>
+            <button
+              className="btn bg-blue-500 text-white py-2 px-4 rounded-md"
+              onClick={() => setValidation(false)}
+            >
+              Ok
+            </button>
+          </div>
         </div>
-      </div>
       )}
       {popUp && (
         <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">

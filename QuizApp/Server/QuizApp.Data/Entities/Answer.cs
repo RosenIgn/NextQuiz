@@ -8,28 +8,11 @@ namespace QuizApp.Data.Entities
 {
     public class Answer
     {
-        public Answer(string text, bool right,string QuestionId)
-        {
-            Text=text;
-
-        }
-
-        public Answer()
-        {
-            
-        }
-
-        [Key]
-        [Required]
-        public string Id { get; init; } = Guid.NewGuid().ToString();
-
-        
-        public string Text { get; set; }
+        public int Id { get; set; }
 
         [Required]
-        public bool Correct { get; set; } 
-
-        [Required]
-        public string QuestionId { get; set; } 
+        public string Label { get; set; } = null!;
+        public int QuestionId { get; set; }
+        public required Question Question { get; set; }
     }
 }
