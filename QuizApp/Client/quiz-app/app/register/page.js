@@ -25,7 +25,7 @@ const Page = () => {
     const updatedValidation = { ...validation };
     const emailReqExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     
-    if (formData.Username.length <= 5 || formData.Username.length >= 20) {
+    if (formData.Username.length < 5 || formData.Username.length > 20) {
       updatedValidation.Username = true;
     }
     else {
@@ -37,7 +37,7 @@ const Page = () => {
     else {
       updatedValidation.Email = false;
     }
-    if(formData.Password.length <= 8 || formData.Password.length >= 30){
+    if(formData.Password.length < 8 || formData.Password.length > 30){
       updatedValidation.Password = true;
     }
     else {
@@ -51,31 +51,31 @@ const Page = () => {
     }
 
     setValidation(updatedValidation)
-    console.log("Form submitted:", formData);
     if (
       formData.Username == "" ||
       formData.Password == "" ||
       formData.Email == "" ||
       formData.ConfirmPassword == ""
-    ) {
-      console.log("You have not entered a username, passwords or email.");
-    } else {
-      const response = await fetch("https://localhost:5074/api/Auth/Register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      const responseData = await response.json();
-      if (responseData.success) {
-        window.location.href = "/login";
+      ) {
+        console.log("You have not entered a username, passwords or email.");
+      } else {
+        const response = await fetch("https://localhost:5074/api/Auth/Register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+        const responseData = await response.json();
+        if (responseData.success) {
+          window.location.href = "/login";
+        }
       }
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-light-blue flex items-center justify-center">
+      console.log("Form submitted:", formData);
+    };
+    
+    return (
+      <div className="min-h-screen bg-light-blue flex items-center justify-center">
       <div className="flex flex-col items-center justify-center max-w-md w-full p-6 bg-base-100 rounded-lg shadow-md">
         <h2 className="text-3xl text-main-blue font-extrabold mb-6">
           Register
