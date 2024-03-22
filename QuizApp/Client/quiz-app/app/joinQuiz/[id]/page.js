@@ -128,7 +128,7 @@ const Page = () => {
             }`}
           >
             <h2 className="text-xl font-semibold mb-2">
-              Question №{index + 1}: {part.label}
+              {index + 1}. {part.label}
             </h2>
             <div className="space-y-2">
               {part.answers.map((option, index) => (

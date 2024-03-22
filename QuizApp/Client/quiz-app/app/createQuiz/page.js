@@ -3,17 +3,24 @@ import { useState } from "react";
 
 const Page = () => {
   const [questions, setQuestions] = useState([
-    { id: Date.now(), question: "", options: [""], selectedOption: "" },
+    {
+      id: Date.now(),
+      question: "",
+      options: ["", "", "", ""],
+      selectedOption: "",
+    },
   ]);
   const [popUp, setPopUp] = useState(false);
   const [quizCode, setQuizCode] = useState("");
   const [validation, setValidation] = useState(false);
 
   const submitHandler = async () => {
+    console.log(questions);
     const isEmpty = questions.some(
       (question) =>
         question.question === "" ||
-        question.options.some((option) => option === "")
+        question.options.some((option) => option === "") ||
+        question.selectedOption?.length === 0
     );
     if (isEmpty) {
       setValidation(true);
@@ -41,7 +48,12 @@ const Page = () => {
   const addQuestion = () => {
     setQuestions([
       ...questions,
-      { id: Date.now(), question: "", options: [""], selectedOption: "" },
+      {
+        id: Date.now(),
+        question: "",
+        options: ["", "", "", ""],
+        selectedOption: "",
+      },
     ]);
   };
 
@@ -91,37 +103,36 @@ const Page = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-3xl font-bold mb-4 text-center text-gray-800">
-        Create Quiz
-      </h1>
-
+    <div className="flex flex-col items-center justify-center min-h-screen bg-light-blue">
       {questions.map((question, index) => (
-        <div key={question.id} className="relative w-1/2 mb-4">
-          <div className="flex flex-row justify-center bg-gray-100 space-y-4 rounded-md w-full p-4">
-            <div className="flex flex-col mr-20">
-              <div className="badge mb-4 w-4/5 self-center text-center text-lg text-gray-700">
-                {`Question ${index + 1}`}
+        <div key={question.id} className="relative w-1/3 mb-4">
+          <div className="flex flex-col items-center justify-center bg-gray-100 space-y-2 rounded-md w-full p-3">
+            <div className="flex flex-col">
+              <div className="border-b border-gray-700 pb-2 w-96">
+                <input
+                  type="text"
+                  placeholder={`Question ${index + 1}`}
+                  className="input input-bordered w-96 max-96 focus:outline-none focus:border-blue-400"
+                  onChange={(e) =>
+                    handleQuestionChange(question.id, e.target.value)
+                  }
+                  value={question.question}
+                />
               </div>
-              <textarea
-                className="textarea flex-row text-md w-full max-h-44 mb-4 p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-400"
-                onChange={(e) =>
-                  handleQuestionChange(question.id, e.target.value)
-                }
-                placeholder="Type your question here"
-                value={question.question}
-              ></textarea>
             </div>
 
-            <div className="space-y-2">
-              {question.options.map((option, optionIndex) => (
-                <div key={optionIndex} className="flex items-center space-x-2">
+            {question.options.map((option, optionIndex) => (
+              <div
+                key={optionIndex}
+                className="flex items-center justify-between w-96 space-x-2"
+              >
+                <div className="flex flex-row items-center space-x-2 w-full">
                   <input
                     type="radio"
                     name={`radio-${question.id}`}
                     className="radio mb-2"
                     value={option}
-                    checked={question.selectedOption === option} // Set the checked state based on selectedOption
+                    checked={question.selectedOption === option}
                     onChange={(e) =>
                       handleOptionChange(
                         question.id,
@@ -131,8 +142,8 @@ const Page = () => {
                     }
                   />
                   <input
-                    className="input border-light-blue mb-2 p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-400"
-                    placeholder="Type your answer here"
+                    className="input border-light-blue mb-2 p-2 border w-full rounded-md focus:outline-none focus:border-blue-400"
+                    placeholder={`Answer ${optionIndex + 1}`}
                     onChange={(e) =>
                       handleOptionChange(
                         question.id,
@@ -142,23 +153,23 @@ const Page = () => {
                     }
                     value={option}
                   />
-                  <button
-                    className="btn mb-2 text-lg text-red-600 font-semibold"
-                    onClick={() => removeOption(question.id, optionIndex)}
-                  >
-                    X
-                  </button>
                 </div>
-              ))}
-              {question.options.length <= 3 && (
                 <button
-                  className="btn bg-blue-500 text-white py-2 px-4 rounded-md"
-                  onClick={() => addOption(question.id)}
+                  className="btn mb-2 text-lg text-red-600 font-semibold"
+                  onClick={() => removeOption(question.id, optionIndex)}
                 >
-                  Add Option
+                  X
                 </button>
-              )}
-            </div>
+              </div>
+            ))}
+            {question.options.length <= 3 && (
+              <button
+                className="btn bg-main-blue text-white py-2 px-4 rounded-md"
+                onClick={() => addOption(question.id)}
+              >
+                Add Option
+              </button>
+            )}
           </div>
           <button
             className="btn absolute bg-red-500 text-white py-2 px-4 rounded-full shadow-md text-lg top-0 right-0 mt-2 mr-2"
@@ -170,7 +181,7 @@ const Page = () => {
       ))}
 
       <button
-        className="btn bg-blue-500 text-white py-2 px-4 rounded-md mt-4"
+        className="btn bg-main-blue text-white py-2 px-4 rounded-md mt-4"
         onClick={addQuestion}
       >
         Add Question
@@ -188,7 +199,7 @@ const Page = () => {
               All fields must be filled!
             </h2>
             <button
-              className="btn bg-blue-500 text-white py-2 px-4 rounded-md"
+              className="btn bg-main-blue text-white py-2 px-4 rounded-md"
               onClick={() => setValidation(false)}
             >
               Ok
@@ -203,13 +214,13 @@ const Page = () => {
             <h1 className="text-lg font-bold">{quizCode}</h1>
             <div className="flex justify-between w-full mt-4">
               <button
-                className="btn bg-blue-500 text-white py-2 px-4 rounded-md"
+                className="btn bg-main-blue text-white py-2 px-4 rounded-md"
                 onClick={() => setPopUp(false)}
               >
                 Edit
               </button>
               <a
-                className="btn bg-blue-500 text-white py-2 px-4 rounded-md"
+                className="btn bg-main-blue text-white py-2 px-4 rounded-md"
                 href="/joinQuiz"
               >
                 ok
