@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using QuizApp.Common.Requests.Quiz;
 using QuizApp.Data;
 using QuizApp.Data.Entities;
@@ -8,11 +9,11 @@ namespace QuizApp.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CreateQuizController : Controller
+    public class QuizController : Controller
     {
         private readonly AppDbContext _dbContext;
         private readonly UserManager<User> _userManager;
-        public CreateQuizController(AppDbContext dbContext, UserManager<User> userManager)
+        public QuizController(AppDbContext dbContext, UserManager<User> userManager)
         {
             _dbContext = dbContext;
             _userManager = userManager;
@@ -64,6 +65,17 @@ namespace QuizApp.API.Controllers
             {
                 return StatusCode(500, "An error occurred while saving the quiz.");
             }
+        }
+
+        [HttpGet("{code}")]
+        public async Task<ActionResult<bool>> CheckCodeExists(string code)
+        {
+            var codeExists = await _dbContext.Quizzes.AnyAsync(c => c.Code == code);
+            if (codeExists)
+            {
+                return Ok("Success");
+            }
+            return Ok("Not Found");
         }
     }
 }

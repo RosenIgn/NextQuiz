@@ -25,16 +25,13 @@ const Page = () => {
       selectedOption: question.selectedOption,
     }));
 
-    const response = await fetch(
-      "https://localhost:5074/api/CreateQuiz/CreateQuiz",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody), // Send the formatted request body
-      }
-    );
+    const response = await fetch("https://localhost:5074/api/Quiz/CreateQuiz", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody), // Send the formatted request body
+    });
     const responseData = await response.text();
 
     setQuizCode(responseData);
