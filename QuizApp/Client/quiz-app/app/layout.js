@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
           <CustomNavbar />
           {children}
         </div>
-        <footer className="footer items-center p-4 bg-gray-800 text-neutral-content">
+        <footer className="footer items-center p-4 bg-gray-50 text-slate-500">
           <aside className="items-center grid-flow-col">
             <svg
               width="36"

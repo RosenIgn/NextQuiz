@@ -63,7 +63,34 @@ namespace QuizApp.API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(500, "An error occurred while saving the quiz.");
+                return StatusCode(500, "We couldn't save the quiz.");
+            }
+        }
+
+        [HttpGet("GetQuizData/{code}")]
+        public async Task<IActionResult> GetQuizData(string code)
+        {
+            try
+            {
+                var quizzes = await _dbContext.Quizzes
+                    .Include(q => q.Questions)
+                    .ThenInclude(q => q.Answers)
+                    .Where(q => q.Code == code)
+                    .ToListAsync();
+
+                var quizData = quizzes.SelectMany(q => q.Questions.Select(question => new
+                {
+                    question.Id,
+                    question.Label,
+                    question.CorrectAnswer,
+                    Answers = question.Answers.Select(answer => answer.Label).ToList()
+                })).ToList();
+
+                return Ok(quizData);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "We couldn't fetch the quiz data...");
             }
         }
 
