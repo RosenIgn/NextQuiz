@@ -17,6 +17,9 @@ const Page = () => {
   const [userData, setUserData] = useState(null);
   const [editing, setEditing] = useState(false);
 
+  const [validation, setValidation] = useState(false);
+  const [validationMessages, setValidationMessages] = useState({});
+
   useEffect(() => {
     const getUser = async () => {
       try {
@@ -33,7 +36,6 @@ const Page = () => {
         );
 
         const data = await response.json();
-        console.log(data);
         setUserData(data);
       } catch (error) {
         console.error("Error fetching user:", error);
@@ -42,6 +44,17 @@ const Page = () => {
 
     getUser();
   }, []);
+
+  useEffect(() => {
+    let timer;
+    if (validation) {
+      timer = setTimeout(() => {
+        setValidation(false);
+        setValidationMessages("");
+      }, 7500);
+    }
+    return () => clearTimeout(timer);
+  }, [validation]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -75,7 +88,10 @@ const Page = () => {
       formData.email == "" ||
       formData.password == ""
     ) {
-      console.log("You have not entered a username, email or password.");
+      setValidation(true);
+      setValidationMessages(
+        "You have not entered a username, email or password."
+      );
     } else {
       const response = await fetch(
         "https://localhost:5074/api/Auth/ChangeUserData",
@@ -94,13 +110,17 @@ const Page = () => {
         }
       );
       const responseData = await response.json();
-      console.log(responseData);
       if (responseData.success) {
-        console.log("Profile updated:", formData);
         resetFormData();
         setEditing(false);
       } else {
-        console.log(responseData.message);
+        setValidation(true);
+        if (responseData.message) {
+          setValidationMessages(responseData.message);
+        }
+        if (responseData.errors) {
+          setValidationMessages(responseData.errors);
+        }
       }
     }
   };
@@ -109,7 +129,8 @@ const Page = () => {
     e.preventDefault();
 
     if (modalData.currentPassword == "" || modalData.newPassword == "") {
-      console.log("You have not entered a password.");
+      setValidation(true);
+      setValidationMessages("You have not entered a password.");
     } else {
       const response = await fetch(
         "https://localhost:5074/api/Auth/ChangeUserPassword",
@@ -127,13 +148,17 @@ const Page = () => {
       );
 
       const responseData = await response.json();
-      console.log(responseData);
       if (responseData.success) {
-        console.log("Let's goo");
+        setEditing(false);
       } else {
-        console.log(responseData.message);
+        setValidation(true);
+        if (responseData.message) {
+          setValidationMessages(responseData.message);
+        }
+        if (responseData.errors) {
+          setValidationMessages(responseData.errors);
+        }
       }
-      setEditing(false);
     }
   };
 
@@ -152,8 +177,8 @@ const Page = () => {
   };
 
   return (
-    <div className="block h-screen bg-light-blue flex items-center justify-center">
-      <div className="flex flex-col items-center bg-base-100 h-3/7 w-3/12 max-w-3/12 p-6 bg-white rounded-lg shadow-lg">
+    <div className="flex items-center justify-center bg-light-blue h-screen">
+      <div className="flex flex-col items-center bg-base-100 h-3/7 w-3/12 max-w-3/12 p-6 rounded-lg shadow-lg">
         <h1 className="text-3xl text-main-blue font-extrabold my-2">
           Account Settings
         </h1>
@@ -243,6 +268,16 @@ const Page = () => {
                   onChange={handleChange}
                   readOnly={!editing}
                 />
+                {/* {validation &&
+                  Object.keys(validationMessages).map((fieldName) => (
+                    <div key={fieldName}>
+                      {validationMessages[fieldName].map((error, index) => (
+                        <p key={index} className="text-wrong-red text-center">
+                          {error}
+                        </p>
+                      ))}
+                    </div>
+                  ))} */}
               </label>
             </div>
           </div>
@@ -359,6 +394,36 @@ const Page = () => {
             </div>
           </div>
         </dialog>
+      </div>
+      <div className="fixed bottom-4 right-4 z-50">
+        {validation && (
+          <div role="alert" className="alert alert-warning">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="stroke-current shrink-0 h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+              />
+            </svg>
+            {typeof validationMessages === "string" ? (
+              <span>{validationMessages}</span>
+            ) : (
+              Object.keys(validationMessages).map((fieldName) => (
+                <div key={fieldName}>
+                  {validationMessages[fieldName].map((error, index) => (
+                    <span key={index}>{error}</span>
+                  ))}
+                </div>
+              ))
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

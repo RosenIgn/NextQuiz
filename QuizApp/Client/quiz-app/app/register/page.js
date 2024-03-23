@@ -8,12 +8,6 @@ const Page = () => {
     Password: "",
     ConfirmPassword: "",
   });
-  // const [validation, setValidation] = useState({
-  //   Username: false,
-  //   Email: false,
-  //   Password: false,
-  //   ConfirmPassword: false,
-  // });
 
   const [validation, setValidation] = useState(false);
   const [validationMessages, setValidationMessages] = useState({});
@@ -25,31 +19,7 @@ const Page = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // const updatedValidation = { ...validation };
-    // const emailReqExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    // if (formData.Username.length < 5 || formData.Username.length > 20) {
-    //   updatedValidation.Username = true;
-    // } else {
-    //   updatedValidation.Username = false;
-    // }
-    // if (!emailReqExp.test(formData.Email)) {
-    //   updatedValidation.Email = true;
-    // } else {
-    //   updatedValidation.Email = false;
-    // }
-    // if (formData.Password.length < 8 || formData.Password.length > 30) {
-    //   updatedValidation.Password = true;
-    // } else {
-    //   updatedValidation.Password = false;
-    // }
-    // if (formData.ConfirmPassword !== formData.Password) {
-    //   updatedValidation.ConfirmPassword = true;
-    // } else {
-    //   updatedValidation.ConfirmPassword = false;
-    // }
-
-    // setValidation(updatedValidation);
     if (
       formData.Username == "" ||
       formData.Password == "" ||
