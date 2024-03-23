@@ -7,6 +7,10 @@ fetchMock.enableMocks();
 
 
 describe('CustomNavbar', () => {
+  
+  test('renders without crashing', () => {
+    render(<Page />);
+  });
 
   test('logs out when logout button is clicked', () => {
     localStorage.setItem('jwt', 'fake-jwt-token');
