@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import Page from '../app/register/page.js'; // Assuming your register page component is named Page
+import Page from '../app/register/page.js';
 import fetchMock from 'jest-fetch-mock';
 
 describe('Register Page', () => {
