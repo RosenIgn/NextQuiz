@@ -7,10 +7,8 @@ const Page = () => {
     username: "",
     password: "",
   });
-  const [validation, setValidation] = useState({
-    Username: false,
-    Password: false,
-  })
+  const [validation, setValidation] = useState(false);
+  const [validationMessage, setValidationMessage] = useState();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,40 +17,33 @@ const Page = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    const updatedValidation = {...validation};
-    //console.log("Form submitted:", formData);
-      const response = await fetch("https://localhost:5074/api/Auth/Login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      const responseData = await response.json();
-      console.log(responseData);
-      if (responseData.success) {
-        const expirationTime = new Date().getTime() + 30 * 60000; // 30 minutes from now
-        localStorage.setItem("jwt", responseData.jwt);
-        localStorage.setItem("jwtExpiration", expirationTime);
-        window.location.href = "/";
-      } else {
-        console.log(responseData.message);
-      }
-    
-    if(false){
-      updatedValidation.Username = true;
+
+    if (!formData.username || !formData.password) {
+      setValidation(true);
+      setValidationMessage("Please enter both username and password.");
+      return;
     }
-    else {
-      updatedValidation.Username = false;
+
+    const response = await fetch("https://localhost:5074/api/Auth/Login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+    const responseData = await response.json();
+    console.log(responseData);
+    if (responseData.success) {
+      const expirationTime = new Date().getTime() + 30 * 60000; // 30 minutes from now
+      localStorage.setItem("jwt", responseData.jwt);
+      localStorage.setItem("jwtExpiration", expirationTime);
+      window.location.href = "/";
+      setValidation(false);
+    } else {
+      console.log(responseData.message);
+      setValidation(true);
+      setValidationMessage(responseData.message);
     }
-    if(true){
-      updatedValidation.Password = true;
-    }
-    else{
-      updatedValidation.Password = false;
-    }
-    setValidation(updatedValidation);
   };
 
   return (
@@ -72,7 +63,6 @@ const Page = () => {
             onChange={handleChange}
             className="input w-full border-light-blue text-black mb-0"
           />
-          {validation.Username && (<p className="text-wrong-red">Username is incorrect</p>)}
           <input
             label="Password"
             type="password"
@@ -82,7 +72,7 @@ const Page = () => {
             onChange={handleChange}
             className="input w-full border-light-blue text-black mt-4 mb-6"
           />
-          {validation.Password && (<p className="text-wrong-red">Password is incorrect</p>)}
+          {validation && <p className="text-wrong-red">{validationMessage}</p>}
           <br />
           <button
             className="btn w-full hover:text-base-content bg-main-blue text-base-200"

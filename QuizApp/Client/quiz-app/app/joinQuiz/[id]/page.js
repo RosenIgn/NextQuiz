@@ -90,15 +90,21 @@ const Page = () => {
       }
     }
 
-    const totalPoints = quiz.reduce((acc, question) => {
+    const totalCorrectAnswers = quiz.reduce((acc, question) => {
       const isCorrect = question.selectedOption === question.correctAnswer;
       return isCorrect ? acc + 1 : acc;
     }, 0);
 
+    const totalQuizPoints = quiz.reduce((acc, question) => {
+      const isCorrect = question.selectedOption === question.correctAnswer;
+      return isCorrect ? acc + question.point : acc;
+    }, 0);
+
     setResults({
-      totalPoints,
-      correctAnswers: totalPoints,
-      incorrectAnswers: quiz.length - totalPoints,
+      // totalPoints: totalPoints,
+      correctAnswers: totalCorrectAnswers,
+      totalQuizPoints: totalQuizPoints,
+      incorrectAnswers: quiz.length - totalCorrectAnswers,
     });
 
     setSubmitPressed(true);
@@ -127,9 +133,12 @@ const Page = () => {
                 : "bg-white"
             }`}
           >
-            <h2 className="text-xl font-semibold mb-2">
-              {index + 1}. {part.label}
-            </h2>
+            <div className="flex flex-row items-start justify-between space-y-2">
+              <h2 className="text-xl font-semibold">
+                {index + 1}. {part.label}
+              </h2>
+              <h2 className="text-lg font-semibold">{part.point}p.</h2>
+            </div>
             <div className="space-y-2">
               {part.answers.map((option, index) => (
                 <div key={index} className="flex items-center">
@@ -172,9 +181,9 @@ const Page = () => {
         {results && (
           <div className="mt-4">
             <h2 className="text-2xl font-semibold mb-2">Results</h2>
-            <p>Total Questions: {quiz.length}</p>
             <p>Correct Answers: {results.correctAnswers}</p>
             <p>Incorrect Answers: {results.incorrectAnswers}</p>
+            <p>Points: {results.totalQuizPoints}</p>
           </div>
         )}
       </div>

@@ -35,7 +35,7 @@ namespace QuizApp.API.Controllers
         {
             if (userData.Username == "" || userData.Password == "")
             {
-                return Ok(new { message = $"You have not entered a username or password." }); //do it with global var
+                return Ok(new { message = $"You have not entered a username or password." });
             }
             var user = await _userManager.FindByNameAsync(userData.Username);
             if (user != null)
@@ -48,11 +48,11 @@ namespace QuizApp.API.Controllers
 
                     return Ok(new { Jwt = jwt, Success = true });
                 }
-                return Ok(new { message = "The password you entered is incorrect, please try again." }); //do it with global var
+                return Ok(new { message = "The password you entered is incorrect, please try again." });
             }
             else
             {
-                return Ok(new { message = $"No account found with username {userData.Username}." }); //do it with global var
+                return Ok(new { message = $"No account found with username {userData.Username}." });
             }
         }
 
@@ -61,7 +61,10 @@ namespace QuizApp.API.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                              .Select(e => e.ErrorMessage)
+                                              .ToList();
+                return BadRequest(errors);
             }
 
             User user = new()
@@ -78,14 +81,11 @@ namespace QuizApp.API.Controllers
 
             if (!result.Succeeded)
             {
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
-                return BadRequest(ModelState);
+                var errors = result.Errors.Select(e => e.Description).ToList();
+                return BadRequest(errors);
             }
 
-            return Ok(new { success = true, message = $"Registration successful" }); //do it with global var
+            return Ok(new { success = true, message = $"Registration successful" });
         }
 
         [HttpGet("GetUser")]
@@ -122,7 +122,7 @@ namespace QuizApp.API.Controllers
 
             if (user == null)
             {
-                return Ok(new { message = $"No account found with username {infoData.CurrentUsername}." }); //do it with global var
+                return Ok(new { message = $"No account found with username {infoData.CurrentUsername}." });
             }
             var verificationResult = _passwordHasher.VerifyHashedPassword(user, infoData.CurrentPassword, infoData.Password);
             if (verificationResult == PasswordVerificationResult.Success)
@@ -139,11 +139,11 @@ namespace QuizApp.API.Controllers
                     }
                     return BadRequest(ModelState);
                 }
-                return Ok(new { message = $"Success", Success = true }); //do it with global var
+                return Ok(new { message = $"Success", Success = true });
             }
             else
             {
-                return Ok(new { message = $"The password is not correct." }); //do it with global var
+                return Ok(new { message = $"The password is not correct." });
             }
         }
         [HttpPost("ChangeUserPassword")]
@@ -158,7 +158,7 @@ namespace QuizApp.API.Controllers
 
             if (user == null)
             {
-                return Ok(new { message = $"No account found with username {data.CurrentUsername}." }); //do it with global var
+                return Ok(new { message = $"No account found with username {data.CurrentUsername}." });
             }
             var verificationResult = _passwordHasher.VerifyHashedPassword(user, data.CurrentPassword, data.Password);
             if (verificationResult == PasswordVerificationResult.Success)
@@ -175,11 +175,11 @@ namespace QuizApp.API.Controllers
                     return BadRequest(ModelState);
                 }
 
-                return Ok(new { message = $"Success", Success = true }); //do it with global var
+                return Ok(new { message = $"Success", Success = true });
             }
             else
             {
-                return Ok(new { message = $"The password is not correct." }); //do it with global var
+                return Ok(new { message = $"The password is not correct." });
             }
         }
 

@@ -8,11 +8,19 @@ const Page = () => {
       question: "",
       options: ["", "", "", ""],
       selectedOption: "",
+      point: 1,
     },
   ]);
   const [popUp, setPopUp] = useState(false);
   const [quizCode, setQuizCode] = useState("");
   const [validation, setValidation] = useState(false);
+
+  const handlePointsChange = (id, value) => {
+    const updatedQuestions = questions.map((question) =>
+      question.id === id ? { ...question, point: Number(value) } : question
+    );
+    setQuestions(updatedQuestions);
+  };
 
   const submitHandler = async () => {
     console.log(questions);
@@ -30,6 +38,7 @@ const Page = () => {
       options: question.options,
       question: question.question,
       selectedOption: question.selectedOption,
+      point: question.point,
     }));
 
     const response = await fetch("https://localhost:5074/api/Quiz/CreateQuiz", {
@@ -53,6 +62,7 @@ const Page = () => {
         question: "",
         options: ["", "", "", ""],
         selectedOption: "",
+        point: 1,
       },
     ]);
   };
@@ -106,73 +116,89 @@ const Page = () => {
     <div className="flex flex-col items-center justify-center min-h-screen bg-light-blue">
       {questions.map((question, index) => (
         <div key={question.id} className="relative w-1/3 mb-4">
-          <div className="flex flex-col items-center justify-center bg-gray-100 space-y-2 rounded-md w-full p-3">
-            <div className="flex flex-col">
-              <div className="border-b border-gray-700 pb-2 w-96">
-                <input
-                  type="text"
-                  placeholder={`Question ${index + 1}`}
-                  className="input input-bordered w-96 max-96 focus:outline-none focus:border-blue-400"
-                  onChange={(e) =>
-                    handleQuestionChange(question.id, e.target.value)
-                  }
-                  value={question.question}
-                />
-              </div>
+          <div className="flex flex-col items-start justify-start bg-gray-100 space-y-2 p-3">
+            <div className="">
+              <input
+                type="number"
+                placeholder="1"
+                className="p-0 text-center border-transparent bg-gray-100 w-8 max-w-8 focus:border-main-blue"
+                min={1}
+                max={10}
+                value={question.point}
+                onChange={(e) =>
+                  handlePointsChange(question.id, e.target.value)
+                }
+              />
+              <span>p.</span>
             </div>
-
-            {question.options.map((option, optionIndex) => (
-              <div
-                key={optionIndex}
-                className="flex items-center justify-between w-96 space-x-2"
-              >
-                <div className="flex flex-row items-center space-x-2 w-full">
+            <div className="flex flex-col items-center justify-center w-full">
+              <div className="flex flex-col">
+                <div className="border-b border-gray-700 pb-2 w-96">
                   <input
-                    type="radio"
-                    name={`radio-${question.id}`}
-                    className="radio mb-2"
-                    value={option}
-                    checked={question.selectedOption === option}
+                    type="text"
+                    placeholder={`Question ${index + 1}`}
+                    className="input input-bordered w-96 max-96 focus:outline-none focus:border-main-blue"
                     onChange={(e) =>
-                      handleOptionChange(
-                        question.id,
-                        optionIndex,
-                        e.target.value
-                      )
+                      handleQuestionChange(question.id, e.target.value)
                     }
-                  />
-                  <input
-                    className="input border-light-blue mb-2 p-2 border w-full rounded-md focus:outline-none focus:border-blue-400"
-                    placeholder={`Answer ${optionIndex + 1}`}
-                    onChange={(e) =>
-                      handleOptionChange(
-                        question.id,
-                        optionIndex,
-                        e.target.value
-                      )
-                    }
-                    value={option}
+                    value={question.question}
                   />
                 </div>
-                <button
-                  className="btn mb-2 text-lg text-red-600 font-semibold"
-                  onClick={() => removeOption(question.id, optionIndex)}
-                >
-                  X
-                </button>
               </div>
-            ))}
-            {question.options.length <= 3 && (
-              <button
-                className="btn bg-main-blue text-white py-2 px-4 rounded-md"
-                onClick={() => addOption(question.id)}
-              >
-                Add Option
-              </button>
-            )}
+
+              {question.options.map((option, optionIndex) => (
+                <div
+                  key={optionIndex}
+                  className="flex items-center justify-between w-96 space-x-2"
+                >
+                  <div className="flex flex-row items-center space-x-2 w-full space-y-2">
+                    <input
+                      type="radio"
+                      name={`radio-${question.id}`}
+                      className="radio"
+                      value={option}
+                      // checked={question.selectedOption === option}
+                      onChange={(e) =>
+                        handleOptionChange(
+                          question.id,
+                          optionIndex,
+                          e.target.value
+                        )
+                      }
+                    />
+                    <input
+                      className="input border-light-blue mb-2 p-2 border w-full rounded-md focus:outline-none focus:border-main-blue"
+                      placeholder={`Answer ${optionIndex + 1}`}
+                      onChange={(e) =>
+                        handleOptionChange(
+                          question.id,
+                          optionIndex,
+                          e.target.value
+                        )
+                      }
+                      value={option}
+                    />
+                  </div>
+                  <button
+                    className="btn text-lg text-red-600 font-semibold"
+                    onClick={() => removeOption(question.id, optionIndex)}
+                  >
+                    X
+                  </button>
+                </div>
+              ))}
+              {question.options.length <= 3 && (
+                <button
+                  className="btn bg-main-blue text-white py-2 px-4 rounded-md"
+                  onClick={() => addOption(question.id)}
+                >
+                  Add Option
+                </button>
+              )}
+            </div>
           </div>
           <button
-            className="btn absolute bg-red-500 text-white py-2 px-4 rounded-full shadow-md text-lg top-0 right-0 mt-2 mr-2"
+            className="btn absolute bg-red-500 text-white py-2 px-4 rounded-full shadow-md text-lg top-0 right-0 mt-8 mr-2"
             onClick={() => removeQuestion(question.id)}
           >
             X

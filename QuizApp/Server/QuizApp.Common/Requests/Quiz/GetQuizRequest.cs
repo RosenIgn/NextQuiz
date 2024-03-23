@@ -11,6 +11,6 @@ namespace QuizApp.Common.Requests.Quiz
         public string Question { get; set; } = null!;
         public List<string> Options { get; set; } = null!;
         public string CorrectOption { get; set; } = null!;
-        public int Points { get; set; }
+        public int Point { get; set; }
     }
 }

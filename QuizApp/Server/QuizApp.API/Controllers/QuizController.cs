@@ -1,3 +1,4 @@
+using System.Drawing;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -32,14 +33,13 @@ namespace QuizApp.API.Controllers
             };
 
             _dbContext.Quizzes.Add(quiz);
-
             foreach (var questionData in quizData)
             {
-
                 Question question = new()
                 {
                     Label = questionData.Question,
                     CorrectAnswer = questionData.SelectedOption,
+                    Point = questionData.Point,
                     Quiz = quiz
                 };
 
@@ -83,6 +83,7 @@ namespace QuizApp.API.Controllers
                     question.Id,
                     question.Label,
                     question.CorrectAnswer,
+                    question.Point,
                     Answers = question.Answers.Select(answer => answer.Label).ToList()
                 })).ToList();
 

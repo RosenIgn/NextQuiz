@@ -15,6 +15,8 @@ namespace QuizApp.Data.Entities
         [Required]
         public string CorrectAnswer { get; set; } = null!;
         [Required]
+        public int Point { get; set; }
+        [Required]
         public required Quiz Quiz { get; set; }
         [Required]
         public List<Answer> Answers { get; set; } = new List<Answer>();
