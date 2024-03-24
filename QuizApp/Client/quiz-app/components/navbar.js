@@ -56,10 +56,7 @@ export const CustomNavbar = () => {
           NextQuiz
         </a>
         {isLoggedIn && (
-          <ul
-            tabIndex={0}
-            className="flex flex-row justify-start justify-center"
-          >
+          <ul tabIndex={0} className="flex flex-row justify-center">
             <li>
               <a
                 className="btn text-xl text-slate-500 bg-transparent border-none"
