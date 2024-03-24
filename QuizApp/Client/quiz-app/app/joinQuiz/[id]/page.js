@@ -101,7 +101,6 @@ const Page = () => {
     }, 0);
 
     setResults({
-      // totalPoints: totalPoints,
       correctAnswers: totalCorrectAnswers,
       totalQuizPoints: totalQuizPoints,
       incorrectAnswers: quiz.length - totalCorrectAnswers,

@@ -7,7 +7,7 @@ namespace QuizApp.Domain
 {
     public class JwtService
     {
-        private string secureKey = "this is a very secure key from NextQuiz Team for Alex Ivanov";
+        private readonly string secureKey = "this is a very secure key from NextQuiz Team for Alex Ivanov";
 
         public string Generate(string id)
         {

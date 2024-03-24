@@ -25,7 +25,6 @@ const Page = () => {
   }, [validation]);
 
   const handleJoinQuiz = async () => {
-    // Handle logic to join the quiz using the quiz code
     const response = await fetch(
       `https://localhost:5074/api/Quiz/${quizCode}`,
       {
