@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Page from '../app/profile/page.js'; // Assuming your profile page component is named ProfilePage
+import Page from '../app/profile/page.js'; 
 
 describe('Profile Page', () => {
 
@@ -10,7 +10,6 @@ describe('Profile Page', () => {
       
   test('renders profile page without crashing', () => {
     render(<Page />);
-    // Check if a specific element or text is present to ensure the page has rendered
     expect(screen.getByText('Account Settings')).toBeTruthy();
     expect(screen.getByText('Email')).toBeTruthy();
     expect(screen.getByText('Username')).toBeTruthy();

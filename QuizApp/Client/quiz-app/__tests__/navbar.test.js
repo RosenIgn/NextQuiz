@@ -9,7 +9,7 @@ fetchMock.enableMocks();
 describe('CustomNavbar', () => {
   
   test('renders without crashing', () => {
-    render(<Page />);
+    render(<CustomNavbar />);
   });
 
   test('logs out when logout button is clicked', () => {
@@ -19,8 +19,5 @@ describe('CustomNavbar', () => {
     const logoutButton = screen.getByRole('link', { name: /Logout/i });
     fireEvent.click(logoutButton);
 
-    // Here, you can assert that the logout functionality is properly triggered,
-    // such as by checking if localStorage is cleared and the user is redirected.
-    // This depends on the implementation of your handleLogout function.
   });
 });

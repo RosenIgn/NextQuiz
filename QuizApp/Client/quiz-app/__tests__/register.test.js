@@ -39,7 +39,6 @@ describe('Register Page', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /Register/i }));
 
-    // Assuming the registration is successful and the user is redirected to the login page
     await waitFor(() => {
       expect(window.location.href).toBe('http://localhost/');
     });

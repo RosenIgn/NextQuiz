@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import Page from '../app/login/page.js'; // Assuming your login page component is named LoginPage
+import Page from '../app/login/page.js'; 
 
 describe('Login Page', () => {
 
