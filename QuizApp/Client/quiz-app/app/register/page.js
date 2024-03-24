@@ -26,7 +26,10 @@ const Page = () => {
       formData.Email == "" ||
       formData.ConfirmPassword == ""
     ) {
-      console.log("You have not entered a username, passwords or email.");
+      setValidation(true);
+      setValidationMessages(
+        "You have not entered a username, passwords or email."
+      );
     } else {
       const response = await fetch("https://localhost:5074/api/Auth/Register", {
         method: "POST",
@@ -39,12 +42,10 @@ const Page = () => {
       if (responseData.success) {
         window.location.href = "/login";
       } else {
-        console.log(responseData);
         setValidation(true);
         setValidationMessages(responseData.errors);
       }
     }
-    console.log("Form submitted:", formData);
   };
 
   return (
@@ -93,7 +94,9 @@ const Page = () => {
             className="input w-full border-light-blue text-black"
           />
           <div className="flex flex-col items-center">
-            {validation &&
+            {validation && typeof validationMessages === "string" ? (
+              <p className="text-wrong-red text-center">{validationMessages}</p>
+            ) : (
               Object.keys(validationMessages).map((fieldName) => (
                 <div key={fieldName}>
                   {validationMessages[fieldName].map((error, index) => (
@@ -102,7 +105,8 @@ const Page = () => {
                     </p>
                   ))}
                 </div>
-              ))}
+              ))
+            )}
           </div>
 
           <br />

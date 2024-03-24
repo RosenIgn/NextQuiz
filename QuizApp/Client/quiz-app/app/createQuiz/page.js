@@ -23,7 +23,6 @@ const Page = () => {
   };
 
   const submitHandler = async () => {
-    console.log(questions);
     const isEmpty = questions.some(
       (question) =>
         question.question === "" ||

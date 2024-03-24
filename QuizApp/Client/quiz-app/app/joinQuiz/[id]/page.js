@@ -118,8 +118,10 @@ const Page = () => {
   return (
     <div className="flex justify-center items-center h-screen bg-light-blue">
       <div className="container mx-auto p-4 text-gray-900">
+        <h1 className="text-3xl"></h1>
         <h1 className="text-3xl mb-2">
-          Time Left: {Math.floor((time % 3600) / 60)}:
+          Quiz Code: {String(params.id)}
+          <br></br>Time Left: {Math.floor((time % 3600) / 60)}:
           {String(time % 60).padStart(2, "0")}
         </h1>
         {quiz?.map((part, index) => (

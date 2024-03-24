@@ -16,7 +16,6 @@ const handleLogout = () => {
     .catch((error) => {
       console.error("Error:", error);
     });
-  console.log("Logging out...");
 };
 
 const SkeletonEffect = () => (

@@ -32,7 +32,6 @@ const Page = () => {
       body: JSON.stringify(formData),
     });
     const responseData = await response.json();
-    console.log(responseData);
     if (responseData.success) {
       const expirationTime = new Date().getTime() + 30 * 60000; // 30 minutes from now
       localStorage.setItem("jwt", responseData.jwt);
@@ -40,7 +39,6 @@ const Page = () => {
       window.location.href = "/";
       setValidation(false);
     } else {
-      console.log(responseData.message);
       setValidation(true);
       setValidationMessage(responseData.message);
     }

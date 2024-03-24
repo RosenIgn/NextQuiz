@@ -1,14 +1,28 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 const Page = () => {
   const [quizCode, setQuizCode] = useState("");
-  const allQuizesObg = {}; // enter the back end logic and return all the quizes
+  const [validation, setValidation] = useState(false);
+  const [validationMessage, setValidationMessages] = useState();
+
   const router = useRouter();
+
   const handleQuizCodeChange = (event) => {
     setQuizCode(event.target.value);
   };
+
+  useEffect(() => {
+    let timer;
+    if (validation) {
+      timer = setTimeout(() => {
+        setValidation(false);
+        setValidationMessages("");
+      }, 7500);
+    }
+    return () => clearTimeout(timer);
+  }, [validation]);
 
   const handleJoinQuiz = async () => {
     // Handle logic to join the quiz using the quiz code
@@ -25,8 +39,10 @@ const Page = () => {
     if (responseData == "Success") {
       console.log(`Joining quiz with code: ${quizCode}`);
       router.push(`joinQuiz/${quizCode}`);
+      setValidation(false);
     } else {
-      console.log(responseData);
+      setValidation(true);
+      setValidationMessages(responseData);
     }
   };
 
@@ -59,6 +75,26 @@ const Page = () => {
         >
           Join Quiz
         </button>
+      </div>
+      <div className="fixed bottom-4 right-4 z-50">
+        {validation && (
+          <div role="alert" className="alert alert-warning">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="stroke-current shrink-0 h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+              />
+            </svg>
+            <span>{validationMessage}</span>
+          </div>
+        )}
       </div>
     </div>
   );
