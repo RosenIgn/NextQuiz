@@ -13,5 +13,6 @@ namespace QuizApp.Common.Requests.Auth
         [Required(ErrorMessage = "Password is required.")]
         [DataType(DataType.Password)]
         public string CurrentPassword { get; set; } = null!;
+        public string NewPassword { get; set; } = null!;
     }
 }

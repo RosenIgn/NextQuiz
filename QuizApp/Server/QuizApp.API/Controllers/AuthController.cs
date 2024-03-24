@@ -163,7 +163,8 @@ namespace QuizApp.API.Controllers
             var verificationResult = _passwordHasher.VerifyHashedPassword(user, data.CurrentPassword, data.Password);
             if (verificationResult == PasswordVerificationResult.Success)
             {
-                user.PasswordHash = _passwordHasher.HashPassword(user, data.Password);
+                var newPasswordHash = _passwordHasher.HashPassword(user, data.NewPassword);
+                user.PasswordHash = newPasswordHash;
                 var result = await _userManager.UpdateAsync(user);
 
                 if (!result.Succeeded)
@@ -175,7 +176,7 @@ namespace QuizApp.API.Controllers
                     return BadRequest(ModelState);
                 }
 
-                return Ok(new { message = $"Success", Success = true });
+                return Ok(new { message = $"Success", Success = true, newPasswordHash });
             }
             else
             {

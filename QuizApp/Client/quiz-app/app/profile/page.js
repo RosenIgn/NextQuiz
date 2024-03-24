@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const Page = () => {
   const [formData, setFormData] = useState({
@@ -19,6 +19,7 @@ const Page = () => {
 
   const [validation, setValidation] = useState(false);
   const [validationMessages, setValidationMessages] = useState({});
+  const changePasswordModalRef = useRef(null);
 
   useEffect(() => {
     const getUser = async () => {
@@ -143,12 +144,19 @@ const Page = () => {
             currentUsername: userData.userName,
             password: modalData.currentPassword,
             currentPassword: userData.passwordHash,
+            newPassword: modalData.newPassword,
           }),
         }
       );
 
       const responseData = await response.json();
       if (responseData.success) {
+        setUserData((prevUserData) => ({
+          ...prevUserData,
+          passwordHash: responseData.newPasswordHash,
+        }));
+        changePasswordModalRef.current.close();
+        resetFormData();
         setEditing(false);
       } else {
         setValidation(true);
@@ -268,16 +276,6 @@ const Page = () => {
                   onChange={handleChange}
                   readOnly={!editing}
                 />
-                {/* {validation &&
-                  Object.keys(validationMessages).map((fieldName) => (
-                    <div key={fieldName}>
-                      {validationMessages[fieldName].map((error, index) => (
-                        <p key={index} className="text-wrong-red text-center">
-                          {error}
-                        </p>
-                      ))}
-                    </div>
-                  ))} */}
               </label>
             </div>
           </div>
@@ -322,7 +320,11 @@ const Page = () => {
             )}
           </div>
         </form>
-        <dialog id="changePasswordModal" className="modal sm:modal-middle">
+        <dialog
+          ref={changePasswordModalRef}
+          id="changePasswordModal"
+          className="modal sm:modal-middle"
+        >
           <div className="modal-box">
             <div className="space-y-2 w-full">
               <h1 className="text-base">Current Password</h1>
